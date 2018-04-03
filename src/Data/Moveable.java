@@ -5,7 +5,7 @@ package Data;
  * able to move in a given direction ({Up, Down, Left, Right} axis).
  * The speed at of the element can be set.
  */
-interface Moveable extends Entity {
+public interface Moveable extends Entity {
 
     /**
      * Get the moving speed of the entity

@@ -4,7 +4,7 @@ package Data;
  * A class that implement the Data.Entity interface is a compoment of the board.
  * It can be gathered by the main character and will then be removed from the board.
  */
-interface Collectible extends Entity {
+public interface Collectible extends Entity {
 
     /**
      * The value of a collectible indicate the number of point the main character will obtain by gethering it.
