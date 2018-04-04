@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+	<level>1</level>
+	<speed>500</speed>
+	<player-lives>3</player-lives>
+
+	<best-score>134</best-score>
+
+	<gomes-values>
+		<super-gome time="5000">10</super-gome>
+		<gome time="3000">3</gome><!--test-->
+		<bonus time="7000">15</bonus>
+	</gomes-values>
+
+	<start-positions>
+		<pacman x="10" y="10"/>
+        <ghost x="15" y="8">inky</ghost>
+        <ghost x="4" y="2">pinky</ghost>
+        <ghost x="3" y="4">clide</ghost>
+        <ghost x="12" y="8">blinky</ghost>
+	</start-positions>
+
+    <gomes>
+        <gome type="gome" x="3" y="5"/>
+        <gome type="gome" x="3" y="2"/>
+    </gomes>
+</game>

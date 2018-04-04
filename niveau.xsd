@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:simpleType name="ghosts">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="inky" />
+            <xs:enumeration value="pinky" />
+            <xs:enumeration value="clide" />
+            <xs:enumeration value="blinky" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="tgomes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="super-gome" />
+            <xs:enumeration value="gome" />
+            <xs:enumeration value="bonus" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="tvgomes">
+        <xs:simpleContent>
+            <xs:extension base="xs:nonNegativeInteger">
+                <xs:attribute name="time" use="required" type="xs:nonNegativeInteger"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:element name="game">
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="level"/>
+                <xs:element ref="speed"/>
+                <xs:element ref="player-lives"/>
+                <xs:element ref="best-score"/>
+                <xs:element ref="gomes-values"/>
+                <xs:element ref="start-positions"/>
+                <xs:element ref="gomes"/>
+            </xs:all>
+        </xs:complexType>
+        <xs:unique name="NoDuplicateCoordinates">
+            <xs:selector xpath=".//*"/>
+            <xs:field xpath="@x"/>
+            <xs:field xpath="@y"/>
+        </xs:unique>
+    </xs:element>
+    <xs:element name="level" type="xs:positiveInteger"/>
+    <xs:element name="speed" type="xs:positiveInteger"/>
+    <xs:element name="player-lives" type="xs:positiveInteger"/>
+    <xs:element name="best-score" type="xs:nonNegativeInteger"/>
+    <xs:element name="gomes-values">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="super-gome" type="tvgomes"/>
+                <xs:element name="gome" type="tvgomes"/>
+                <xs:element name="bonus" type="tvgomes"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="start-positions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="1" maxOccurs="1" ref="pacman"/>
+                <xs:element ref="ghost" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="NoDuplicateGhost">
+            <xs:selector xpath="ghost"/>
+            <xs:field xpath="."/>
+        </xs:unique>
+    </xs:element>
+    <xs:element name="pacman">
+        <xs:complexType>
+            <xs:attribute name="x" use="required" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="y" use="required" type="xs:nonNegativeInteger"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ghost">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="ghosts">
+                    <xs:attribute name="x" use="required" type="xs:nonNegativeInteger"/>
+                    <xs:attribute name="y" use="required" type="xs:nonNegativeInteger"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="gomes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="gome"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="gome">
+        <xs:complexType>
+            <xs:attribute name="type" use="required" type="tgomes"/>
+            <xs:attribute name="x" use="required" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="y" use="required" type="xs:nonNegativeInteger"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
