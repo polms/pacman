@@ -4,7 +4,7 @@ import java.awt.*;
 
 /**
  * A class that implement the Data.Entity interface is a component of the board.
- * It has a color.
+ * It has a color and a type.
  */
 public interface Entity {
     /**
@@ -13,5 +13,9 @@ public interface Entity {
      */
     public Color getColor();
 
+    /**
+     * The entity type, it can be any of EntityType Enum.
+     * @return
+     */
     public EntityType type();
 }
