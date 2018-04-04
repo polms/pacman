@@ -15,7 +15,7 @@ public interface Data {
 
     /**
      * Get the number of lives available for the level
-     * @pre lives > 0
+     * @pre lives superior to zero
      * @return the number of lives
      */
     public int getInitialPlayerLives();
@@ -52,7 +52,7 @@ public interface Data {
 
     /**
      * Get the best score of all saved games; 0 if it is the first games
-     * @post return >= 0
+     * @post return positive
      * @return the size in tiles
      */
     public int getBestScore();
@@ -60,7 +60,7 @@ public interface Data {
     /**
      * Save the new best score
      * @param score The new best score
-     * @pre score > prev.score
+     * @pre score superior to prev.score
      * @post getBestScore() = score
      */
     public void setBestScore(int score);

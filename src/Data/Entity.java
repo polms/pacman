@@ -15,7 +15,7 @@ public interface Entity {
 
     /**
      * The entity type, it can be any of EntityType Enum.
-     * @return
+     * @return the enum
      */
     public EntityType type();
 }
