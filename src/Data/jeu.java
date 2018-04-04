@@ -19,23 +19,23 @@ public interface jeu {
 
     /**
      * Remove the entity at the given position
-     * @param X
-     * @param Y
+     * @param X the x coordinate from the left of the screen
+     * @param Y the y coordinate from the top of the screen
      */
     public void removeEntity(int X, int Y);
 
     /**
      * Add an entity to the board
      * @param entity the entity to be added
-     * @param x
-     * @param y
+     * @param x the x coordinate from the left of the screen
+     * @param y the y coordinate from the top of the screen
      */
     public void addEntity(Entity entity, int x, int y);
 
     /**
      * Get the entity at the given position on the board
-     * @param X
-     * @param Y
+     * @param X the x coordinate from the left of the screen
+     * @param Y the y coordinate from the top of the screen
      * @return the entity, or null if outside boundary
      */
     public Entity getEntity(int X, int Y);

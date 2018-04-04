@@ -33,7 +33,8 @@ public interface Joueur extends Moveable {
     public void pointUp();
 
     /**
-     * Remove all the player's pv, resulting in his death
+     * Get the current player level
+     * @return The player level
      */
     public int getLevel();
 

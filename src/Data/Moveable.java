@@ -15,6 +15,7 @@ public interface Moveable extends Entity {
 
     /**
      * Set the moving speed.
+     * @param speed The speed for the next move
      */
     public void setSpeed(MoveSpeed speed);
 
