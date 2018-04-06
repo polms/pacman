@@ -68,7 +68,7 @@ public class DataLoader implements Data {
         NodeList nl = doc.getElementsByTagName(tag);
         assert nl.getLength() == 1;
         Node bs = nl.item(0);
-        return Integer.parseInt(bs.getTextContent());
+        return Integer.parseInt(bs.getTextContent().trim());
     }
 
     @Override
