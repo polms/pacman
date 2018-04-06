@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"Data","l":"Data"},{"p":"Data","l":"DataLoader"},{"p":"View","l":"Drawer"},{"p":"Data","l":"Entity"},{"p":"Data","l":"EntityGhost"},{"p":"Data","l":"EntityGomme"},{"p":"Data","l":"EntityType"},{"p":"View","l":"Fenetre"},{"p":"Data","l":"GhostType"},{"p":"Data","l":"GommeType"},{"p":"Logic","l":"Logic"},{"p":"Data","l":"MoveSpeed"}]

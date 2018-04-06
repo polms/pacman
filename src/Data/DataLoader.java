@@ -59,6 +59,7 @@ public class DataLoader implements Data {
                 s = e.toString();
             }
             System.out.println(schema.getAbsolutePath() + " is NOT a valid level because:" + s);
+            System.exit(1);
         } catch (IOException e) {}
     }
 
@@ -105,42 +106,36 @@ public class DataLoader implements Data {
         int size = this.getPlateauSize();
         Entity[][] tab = new Entity[size][size];
         Entity mur = new Entity2(EntityType.WALL, Color.BLUE);
+
+        Node n = this.doc.getElementsByTagName("plateau").item(0);
+        String tabS = n.getTextContent().replace(" ", "").replace("\n", "");
+        if (tabS.length() != this.getPlateauSize() * this.getPlateauSize()) {
+            System.err.println("Err: The number of tile in the map file is wrong");
+            return null;
+        }
+        int currentTile = 0;
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                tab[i][j] = mur;
-            }
-        }
-
-        Node n = this.doc.getElementsByTagName("gomes").item(0);
-        NodeList nl = n.getChildNodes();
-        for (int i = 1; i < nl.getLength(); i++)
-        {
-            Node e = nl.item(i);
-            if (e.getNodeType() == Node.ELEMENT_NODE) {
-                NamedNodeMap em = e.getAttributes();
-                String type = em.getNamedItem("type").getNodeValue();
-                GommeType realType;
-                int x = Integer.parseInt(em.getNamedItem("x").getNodeValue());
-                int y = Integer.parseInt(em.getNamedItem("y").getNodeValue());
-                switch (type) {
-                    case "gome":
-                        realType = GommeType.SIMPLE;
-                        break;
-                    case "super-gome":
-                        realType = GommeType.SUPER;
-                        break;
-                    case "bonus":
-                        realType = GommeType.BONUS;
-                        break;
+                char tile = tabS.charAt(currentTile);
+                switch (tile) {
                     default:
-                        realType = GommeType.SIMPLE;
-                        System.err.println("err: unknown gomme type");
+                    case '\u25A0':
+                        tab[i][j] = mur;
+                        break;
+                    case 'N':
+                        tab[i][j] = new Entity3(EntityType.GOMME, Color.white, GommeType.SIMPLE);
+                        break;
+                    case 'B':
+                        tab[i][j] = new Entity3(EntityType.GOMME, Color.white, GommeType.BONUS);
+                        break;
+                    case 'S':
+                        tab[i][j] = new Entity3(EntityType.GOMME, Color.white, GommeType.SUPER);
+                        break;
                 }
-                Entity3 gomme = new Entity3(EntityType.GOMME, Color.white, realType);
-                tab[x][y] = gomme;
+                currentTile++;
             }
         }
-
         // TODO(robin): Add other entities
 
         return tab;
@@ -173,6 +168,8 @@ public class DataLoader implements Data {
 
     public void printBoard() {
         Entity[][] tab = this.getPlateau();
+        if (tab == null)
+            return;
         int size = this.getPlateauSize();
         for (int i = 0; i < size; i++) {
             System.out.print((i%10)+" ");

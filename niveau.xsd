@@ -8,17 +8,10 @@
             <xs:enumeration value="blinky" />
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="tgomes">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="super-gome" />
-            <xs:enumeration value="gome" />
-            <xs:enumeration value="bonus" />
-        </xs:restriction>
-    </xs:simpleType>
     <xs:complexType name="tvgomes">
         <xs:simpleContent>
             <xs:extension base="xs:nonNegativeInteger">
-                <xs:attribute name="time" use="required" type="xs:nonNegativeInteger"/>
+                <xs:attribute name="time" use="required" type="xs:positiveInteger"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -31,7 +24,7 @@
                 <xs:element ref="best-score"/>
                 <xs:element ref="gomes-values"/>
                 <xs:element ref="start-positions"/>
-                <xs:element ref="gomes"/>
+                <xs:element ref="plateau"/>
             </xs:all>
         </xs:complexType>
         <xs:unique name="NoDuplicateCoordinates">
@@ -81,18 +74,11 @@
             </xs:simpleContent>
         </xs:complexType>
     </xs:element>
-    <xs:element name="gomes">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element maxOccurs="unbounded" ref="gome"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="gome">
-        <xs:complexType>
-            <xs:attribute name="type" use="required" type="tgomes"/>
-            <xs:attribute name="x" use="required" type="xs:nonNegativeInteger"/>
-            <xs:attribute name="y" use="required" type="xs:nonNegativeInteger"/>
-        </xs:complexType>
+    <xs:element name="plateau">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:pattern value="[SNB■ \n]*"/>
+        </xs:restriction>
+      </xs:simpleType>
     </xs:element>
 </xs:schema>
