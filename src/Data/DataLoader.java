@@ -1,13 +1,11 @@
 package Data;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import javax.swing.plaf.synth.ColorType;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
 import javax.xml.transform.stream.StreamSource;
@@ -15,6 +13,8 @@ import javax.xml.validation.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 
 public class DataLoader implements Data {
@@ -22,8 +22,7 @@ public class DataLoader implements Data {
     private static int BOARD_SIZE = 30;
     private Document doc;
 
-    public DataLoader(String fileName)
-    {
+    public DataLoader(String fileName) throws InvalidDataException {
         File xmlFile = new File(fileName);
         validate(xmlFile);
 
@@ -31,17 +30,16 @@ public class DataLoader implements Data {
         try {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             this.doc = dBuilder.parse(xmlFile);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void validate(File schema)
-    {
+    /**
+     * Check if a the level file is correct according to xml schema
+     *
+     */
+    private void validate(File schema) throws InvalidDataException {
         StreamSource xmlFileSource = new StreamSource(schema);
         File schemaFile = new File("niveau.xsd");
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -59,8 +57,10 @@ public class DataLoader implements Data {
                 s = e.toString();
             }
             System.out.println(schema.getAbsolutePath() + " is NOT a valid level because:" + s);
-            System.exit(1);
-        } catch (IOException e) {}
+            throw new InvalidDataException(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private int getIntFromUniqueTag(String tag)
@@ -72,8 +72,15 @@ public class DataLoader implements Data {
     }
 
     @Override
-    public HashMap<GommeType, Integer> getGommesValues() {
-        HashMap<GommeType, Integer> p = new HashMap<>();
+    public int getLevelNumber() {
+        int level = getIntFromUniqueTag("level");
+        assert level > 0;
+        return level;
+    }
+
+    @Override
+    public EnumMap<GommeType, Integer> getGommesValues() {
+        EnumMap<GommeType, Integer> p = new EnumMap<>(GommeType.class);
         Node n = this.doc.getElementsByTagName("gomes-values").item(0);
         NodeList nl = n.getChildNodes();
         for (int i = 1; i < nl.getLength(); i++)
@@ -98,7 +105,9 @@ public class DataLoader implements Data {
 
     @Override
     public int getInitialPlayerLives() {
-        return getIntFromUniqueTag("player-lives");
+        int lives = getIntFromUniqueTag("player-lives");
+        assert lives > 0;
+        return lives;
     }
 
     @Override
@@ -136,19 +145,81 @@ public class DataLoader implements Data {
                 currentTile++;
             }
         }
-        // TODO(robin): Add other entities
-
+        assert ! Arrays.asList(tab).contains(null);
         return tab;
     }
 
     @Override
-    public HashMap<GommeType, Integer> getSuperPouvoirTime() {
-        return null;
+    public HashMap<Entity, Point> getEntitiesStartingPosition() {
+        HashMap<Entity, Point> ret = new HashMap<>();
+        Node n = this.doc.getElementsByTagName("start-positions").item(0);
+        NodeList nl = n.getChildNodes();
+        for (int i = 1; i < nl.getLength(); i++) {
+            Node c = nl.item(i);
+            if (c.getNodeType() == Node.ELEMENT_NODE) {
+                String vc = c.getTextContent().trim();
+                String cn = c.getNodeName();
+                int x = Integer.parseInt(c.getAttributes().getNamedItem("x").getTextContent().trim());
+                int y = Integer.parseInt(c.getAttributes().getNamedItem("y").getTextContent().trim());
+                Point p = new Point(x,y);
+                if (cn.equals("pacman")) {
+                    ret.put(new Entity2(EntityType.PACMAN, Color.yellow), p);
+                } else {
+                    switch (vc) {
+                        case "inky":
+                            ret.put(new Entity4(EntityType.GHOST, Color.BLUE, GhostType.INKY), p);
+                            break;
+                        case "pinky":
+                            ret.put(new Entity4(EntityType.GHOST, Color.PINK, GhostType.PINKY), p);
+                            break;
+                        case "clide":
+                            ret.put(new Entity4(EntityType.GHOST, Color.ORANGE, GhostType.CLIDE), p);
+                            break;
+                        case "blinky":
+                            ret.put(new Entity4(EntityType.GHOST, Color.RED, GhostType.BLINKY), p);
+                            break;
+                    }
+                }
+            }
+
+        }
+        return ret;
+    }
+
+    @Override
+    public EnumMap<GommeType, Integer> getSuperPouvoirTime() {
+        EnumMap<GommeType, Integer> p = new EnumMap<>(GommeType.class);
+        Node n = this.doc.getElementsByTagName("gomes-values").item(0);
+        NodeList nl = n.getChildNodes();
+        for (int i = 1; i < nl.getLength(); i++)
+        {
+            if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                Node c = nl.item(i);
+                String vc = c.getAttributes().getNamedItem("time").getTextContent().trim();
+                int value = Integer.parseInt(vc);
+                switch (nl.item(i).getNodeName()) {
+                    case "super-gome":
+                        p.put(GommeType.SUPER, value);
+                        break;
+                    default:
+                        System.err.println("Err: getSuperPouvoirTime() invalid node found.");
+                    case "gome":
+                        p.put(GommeType.SIMPLE, value);
+                        break;
+                    case "bonus":
+                        p.put(GommeType.BONUS, value);
+                        break;
+                }
+            }
+        }
+        return p;
     }
 
     @Override
     public int getGameSpeed() {
-        return getIntFromUniqueTag("speed");
+        int speed = getIntFromUniqueTag("speed");
+        assert speed > 0;
+        return speed;
     }
 
     @Override
@@ -158,12 +229,14 @@ public class DataLoader implements Data {
 
     @Override
     public int getBestScore() {
-        return getIntFromUniqueTag("best-score");
+        int score = getIntFromUniqueTag("best-score");
+        assert score >= 0;
+        return score;
     }
 
     @Override
     public void setBestScore(int score) {
-
+        System.err.println("Err: void setBestScore(int score) unimplemented");
     }
 
     public void printBoard() {
@@ -198,11 +271,10 @@ public class DataLoader implements Data {
         }
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws InvalidDataException {
         DataLoader d = new DataLoader("map1.xml");
         System.out.println("Score: "+ d.getBestScore());
-        System.out.println(d.getGommesValues().values());
+        System.out.println(d.getEntitiesStartingPosition().values());
         Entity[][] test = d.getPlateau();
         d.printBoard();
     }
@@ -251,5 +323,31 @@ class Entity3 implements EntityGomme {
     @Override
     public GommeType getGommeType() {
         return this.gt;
+    }
+}
+
+class Entity4 implements EntityGhost {
+    private GhostType gt;
+    private EntityType t;
+    private Color c;
+
+    public Entity4 (EntityType t, Color c, GhostType gt){
+        this.t = t;
+        this.c = c;
+        this.gt = gt;
+    }
+    @Override
+    public GhostType getGhostType() {
+        return gt;
+    }
+
+    @Override
+    public Color getColor() {
+        return c;
+    }
+
+    @Override
+    public EntityType type() {
+        return t;
     }
 }

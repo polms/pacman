@@ -10,12 +10,18 @@
     </xs:simpleType>
     <xs:complexType name="tvgomes">
         <xs:simpleContent>
-            <xs:extension base="xs:nonNegativeInteger">
-                <xs:attribute name="time" use="required" type="xs:positiveInteger"/>
+            <xs:extension base="xs:positiveInteger">
+                <xs:attribute name="time" use="required" type="xs:nonNegativeInteger"/><!-- Peux être zero pour désactiver le temps de d'invincibilité -->
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-    <xs:element name="game">
+        <xs:simpleType name="coords">
+            <xs:restriction base="xs:nonNegativeInteger">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="30"/> <!-- On a choisi une taille de plateau de 30 par 30 -->
+            </xs:restriction>
+        </xs:simpleType>
+    <xs:element name="game"> <!-- Liste des sections du fichier-->
         <xs:complexType>
             <xs:all>
                 <xs:element ref="level"/>
@@ -27,7 +33,7 @@
                 <xs:element ref="plateau"/>
             </xs:all>
         </xs:complexType>
-        <xs:unique name="NoDuplicateCoordinates">
+        <xs:unique name="NoDuplicateCoordinates"> <!-- Deux entitées ne peuvent pas êtres à la même position -->
             <xs:selector xpath=".//*"/>
             <xs:field xpath="@x"/>
             <xs:field xpath="@y"/>
@@ -36,7 +42,7 @@
     <xs:element name="level" type="xs:positiveInteger"/>
     <xs:element name="speed" type="xs:positiveInteger"/>
     <xs:element name="player-lives" type="xs:positiveInteger"/>
-    <xs:element name="best-score" type="xs:nonNegativeInteger"/>
+    <xs:element name="best-score" type="xs:nonNegativeInteger"/> <!-- un score de 0 signale que c'est la première partie jouée -->
     <xs:element name="gomes-values">
         <xs:complexType>
             <xs:all>
@@ -60,16 +66,16 @@
     </xs:element>
     <xs:element name="pacman">
         <xs:complexType>
-            <xs:attribute name="x" use="required" type="xs:nonNegativeInteger"/>
-            <xs:attribute name="y" use="required" type="xs:nonNegativeInteger"/>
+            <xs:attribute name="x" use="required" type="coords"/>
+            <xs:attribute name="y" use="required" type="coords"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="ghost">
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="ghosts">
-                    <xs:attribute name="x" use="required" type="xs:nonNegativeInteger"/>
-                    <xs:attribute name="y" use="required" type="xs:nonNegativeInteger"/>
+                    <xs:attribute name="x" use="required" type="coords"/>
+                    <xs:attribute name="y" use="required" type="coords"/>
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
@@ -77,7 +83,7 @@
     <xs:element name="plateau">
       <xs:simpleType>
         <xs:restriction base="xs:token">
-          <xs:pattern value="[SNB■ \n]*"/>
+          <xs:pattern value="[SNB■ \n]*"/> <!-- S indique une super-gomme, N une gomme normale, B une gomme bonus et ■ un mur -->
         </xs:restriction>
       </xs:simpleType>
     </xs:element>

@@ -1,17 +1,33 @@
 package Data;
 
+import java.awt.*;
+import java.util.EnumMap;
 import java.util.HashMap;
 
 /**
  * This interface enable access the initials data of the game
  */
 public interface Data {
+
+    /**
+     * Get the number of the loaded stage
+     * @return The stage number
+     */
+    public int getLevelNumber();
+
     /**
      * Get the values in points of each gomme type.
      * @post each Integer is positive
      * @return an hashmap associating each GommeType with it's value
      */
-    public HashMap<GommeType, Integer> getGommesValues();
+    public EnumMap<GommeType, Integer> getGommesValues();
+
+    /**
+     * Get the time a superpouvoir is applied to a player for each gomme type
+     * @post each Integer is positive
+     * @return an hashmap associating each GommeType with it's value
+     */
+    public EnumMap<GommeType, Integer> getSuperPouvoirTime();
 
     /**
      * Get the number of lives available for the level
@@ -21,20 +37,22 @@ public interface Data {
     public int getInitialPlayerLives();
 
     /**
-     * Get the game board, each tiles as an entity. It can be a wall, a gomme, a ghost or the player
+     * Get the game board, each tiles has an entity. It can be a wall or a gomme
      * @post no tiles are null
-     * @post one and only one pacman
-     * @post at most one of each GhostType
-     * @return The game board
+     * @return The game board, can be null if the game file is not correct
      */
     public Entity[][] getPlateau();
 
+
     /**
-     * Get the time a superpouvoir is applied to a player for each gomme type
-     * @post each Integer is positive
-     * @return an hashmap associating each GommeType with it's value
+     * Get the starting positions of Pacman and the ghosts
+     * Pacman can be alone or with up to five of the unique ghosts
+     *
+     * @post only one pacman entity
+     * @post at most one entity of each ghost types
+     * @return A mac betwin entities and their starting point.
      */
-    public HashMap<GommeType, Integer> getSuperPouvoirTime();
+    public HashMap<Entity, Point> getEntitiesStartingPosition();
 
     /**
      * Get the speed of a game frame in milliseconds
