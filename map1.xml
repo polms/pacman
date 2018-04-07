@@ -13,7 +13,7 @@
         </gomes-values>
 
         <start-positions>
-                <pacman x="10" y="10"/>
+                <pacman x="1" y="1"/>
                 <ghost x="15" y="8">inky</ghost>
                 <ghost x="4" y="2">pinky</ghost>
                 <ghost x="3" y="4">clide</ghost>

@@ -35,7 +35,19 @@ public class Pacman implements Ipacman {
 	
 
 	public void move(int dx) {
-		
+		switch (direction) {
+			case up:
+				this.y -= dx;
+				break;
+			case left:
+				this.x -= dx;
+				break;
+			case right:
+				this.x += dx;
+				break;
+			case down:
+				this.y += dx;
+		}
 	}
 	
 	public void changeDirection(Direction dir) {

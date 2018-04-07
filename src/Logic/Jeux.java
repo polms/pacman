@@ -31,50 +31,53 @@ public class Jeux implements Logic{
 	public void movePlayerUp() {
 		//changement de la direction
 		pacman.changeDirection(Direction.up);
+        movePacman();
 	}
 
 	@Override
 	public void movePlayerDown() {
 		pacman.changeDirection(Direction.down);
+		movePacman();
 	}
 
 	@Override
 	public void movePlayerLeft() {
-		pacman.changeDirection(Direction.left);
+	    pacman.changeDirection(Direction.left);
+        movePacman();
 	}
 
 	@Override
 	public void movePlayerRight() {
-		pacman.changeDirection(Direction.right);
+        pacman.changeDirection(Direction.right);
+        movePacman();
 	}
 	
 	
 	private void movePacman() {
 		//pos de pacman dans la matrice
-		int xTableau = (pacman.getPositionX()/this.pasDeResolution)-1/2;
-		int yTableau = (pacman.getPositionY()/this.pasDeResolution)-1/2;
+		int xTableau = pacman.getPositionX();
+		int yTableau = pacman.getPositionY();
 		
 		//s'il y a un mur, pacman s'arrete
 		if(pacman.getDirection()==Direction.down) {
-			if(this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
+			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
 				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.up) {
-			if(this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL)
+			if(plateau[xTableau][yTableau-1] == null ||this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL)
 				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.left) {
-			if(this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
+			if(plateau[xTableau-1][yTableau] == null ||this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
 				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.right) {
-			if(this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
+			if(plateau[xTableau+1][yTableau] == null ||this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
 				pacman.move(1);
 		}
-		
-		
+
 		//pacman mange les gommes
-		if(plateau[xTableau][yTableau].type() == EntityType.GOMME) {
+		if(plateau[xTableau][yTableau] != null && plateau[xTableau][yTableau].type() == EntityType.GOMME) {
 			EntityGomme gomme = (EntityGomme) (plateau[xTableau][yTableau]);
 			pacman.eatGomme(data.getGommesValues().get(gomme.getGommeType()));
 			
@@ -100,13 +103,12 @@ public class Jeux implements Logic{
 
 	@Override
 	public Ghost[] getGhosts() {
-		
 		//déplacement des GHOSTS
 		for(int i=0;i<ghosts.length;i++) {
 
 			//pos du ghost dans la matrice
-			int xTableau = (ghosts[i].getPositionX()/this.pasDeResolution)-1/2;
-			int yTableau = (ghosts[i].getPositionY()/this.pasDeResolution)-1/2;
+			int xTableau = ghosts[i].getPositionX();
+			int yTableau = ghosts[i].getPositionY();
 
 			//directions possibles
 			ArrayList<Direction> arDir = new ArrayList<>();
@@ -161,11 +163,6 @@ public class Jeux implements Logic{
 				}
 			}
 		}
-		
-		//deplacement pacman
-		movePacman();
-		
-		
 		return ghosts;
 	}
 	
