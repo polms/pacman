@@ -23,18 +23,18 @@ public interface Logic {
      */
     public void movePlayerRight();
 
-    /**
-     * Move the player by a grid unit in the same direction as the last time it was used.
-     * If the player was not moved before, the default is up.
-     */
-    public void movePlayerAgain();
-
 
     /**
      * Get the size of the board (it is a square)
      * @return The size
      */
     public int getSize();
+    
+    /**
+     * Get the resolution in pixel
+     * @return resolution
+     */
+    public int getPasDeResolution();
 
     /**
      * Get the entity at the given position on the board
@@ -43,4 +43,17 @@ public interface Logic {
      * @return the entity, or null if outside boundary
      */
     public Entity getEntity(int X, int Y);
+    
+    /**
+     * get the pacman of the game
+     * @return the pacman
+     */
+    public Pacman getPacman();
+    
+    
+    /**
+     * get all the ghosts of the game
+     * @return list of ghost
+     */
+    public Ghost[] getGhosts();
 }
