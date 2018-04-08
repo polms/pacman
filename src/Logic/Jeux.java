@@ -60,7 +60,7 @@ public class Jeux implements Logic{
 		
 		//s'il y a un mur, pacman s'arrete
 		if(pacman.getDirection()==Direction.down) {
-			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
+			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL) //TODO: check array bound
 				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.up) {
@@ -106,13 +106,17 @@ public class Jeux implements Logic{
 		//déplacement des GHOSTS
 		for(int i=0;i<ghosts.length;i++) {
 
+			if (ghosts[i] == null) {
+				continue;
+			}
+
 			//pos du ghost dans la matrice
 			int xTableau = ghosts[i].getPositionX();
 			int yTableau = ghosts[i].getPositionY();
 
 			//directions possibles
 			ArrayList<Direction> arDir = new ArrayList<>();
-			if(this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL)
+			if(this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL) //TODO: Check array bound
 				arDir.add(Direction.up);
 			if(this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
 				arDir.add(Direction.down);
@@ -123,7 +127,7 @@ public class Jeux implements Logic{
 
 			//trouve la marche arrière
 			Direction marcheArriere;
-			if(ghosts[i].getDirection()==Direction.right)
+			if(ghosts[i].getDirection()==Direction.right) //TODO: premier mouvement ? risque de bloquage
 				marcheArriere = Direction.left;
 			else if(ghosts[i].getDirection()==Direction.left)
 				marcheArriere = Direction.right;
@@ -134,7 +138,7 @@ public class Jeux implements Logic{
 
 			//enlève la direction de marche arrière si il y à une autre direction possible
 			if(arDir.size()>1)
-				for(int a=0;a<arDir.size();a++) {
+				for(int a=0;a<arDir.size();a++) { //TODO: Itérateur ?
 					if(arDir.get(a)==marcheArriere) {
 						arDir.remove(a);
 						break;
@@ -142,18 +146,16 @@ public class Jeux implements Logic{
 				}
 
 			//choisi une direction aléatoirement
-			Direction newDirection = arDir.get((int) ((arDir.size()-1)*Math.random()));
-			if(newDirection!=ghosts[i].getDirection()) {
-				//centre le ghost sur la voie
-				if(newDirection==Direction.down || newDirection==Direction.up)
-					ghosts[i].centreX(pasDeResolution);
-				if(newDirection==Direction.left || newDirection==Direction.right)
-					ghosts[i].centreY(pasDeResolution);
-				ghosts[i].setDirection(newDirection);
+			if (arDir.size() != 0) {
+				Direction newDirection = arDir.get((int) ((arDir.size()) * Math.random()));
+				if (newDirection != ghosts[i].getDirection()) {
+					ghosts[i].setDirection(newDirection);
+				}
+
+				//déplacement
+				ghosts[i].move(1);
 			}
 
-			//déplacement
-			ghosts[i].move(1);
 
 			//pacman dead?
 			if(Math.abs(pacman.getPositionX()-ghosts[i].getPositionX())<5 && Math.abs(pacman.getPositionY()-ghosts[i].getPositionY())<5) {

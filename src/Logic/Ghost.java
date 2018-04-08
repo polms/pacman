@@ -37,15 +37,20 @@ public class Ghost implements Ighost {
 		return type;
 	}
 	
-	public void move(int delta) {
-		if(direction==Direction.down)
-			y += delta;
-		else if(direction==Direction.up)
-			y -= delta;
-		else if(direction==Direction.left)
-			x -= delta;
-		else
-			x += delta;
+	public void move(int dx) {
+		switch (direction) {
+			case up:
+				this.y -= dx;
+				break;
+			case left:
+				this.x -= dx;
+				break;
+			case right:
+				this.x += dx;
+				break;
+			case down:
+				this.y += dx;
+		}
 	}
 	
 	public void setDirection(Direction dir) {
