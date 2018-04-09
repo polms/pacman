@@ -61,6 +61,7 @@ public class Pacman implements Ipacman {
 	
 	public void kill() {
 		pv --;
+		System.out.println("Pacman got hurt ");
 	}
 	
 	public void eatGomme(int points) {

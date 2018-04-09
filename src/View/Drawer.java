@@ -69,12 +69,11 @@ public class Drawer extends Canvas {
 	   }
         Ipacman pacman = l.getPacman();
         bufferGraphics.drawImage(new ImageIcon("images/pac-man.png").getImage(), pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
-	   for (Ighost go : l.getGhosts()) {
+	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
-	           System.out.println("Ghost "+go.getPositionX()+" "+go.getPositionY()+" "+go.getDirection().toString() );
                bufferGraphics.setColor(Color.red);
-               bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
-               //bufferGraphics.drawImage(new ImageIcon("images/ghost-rose.png").getImage(), go.getPositionX() * this.pas, go.getPositionY() * this.pas, this.pas, this.pas, this);
+               //bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
+               bufferGraphics.drawImage(new ImageIcon("images/clide.png").getImage(), go.getPositionX() * this.pas, go.getPositionY() * this.pas, this.pas, this.pas, this);
            }
 	   }
 

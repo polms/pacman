@@ -116,13 +116,13 @@ public class Jeux implements Logic{
 
 			//directions possibles
 			ArrayList<Direction> arDir = new ArrayList<>();
-			if(this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL) //TODO: Check array bound
+			if(plateau[xTableau][yTableau-1] == null || this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL) //TODO: Check array bound
 				arDir.add(Direction.up);
-			if(this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
+			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
 				arDir.add(Direction.down);
-			if(this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
+			if(plateau[xTableau-1][yTableau] == null || this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
 				arDir.add(Direction.left);
-			if(this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
+			if(plateau[xTableau+1][yTableau] == null || this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
 				arDir.add(Direction.right);
 
 			//trouve la marche arrière
@@ -158,13 +158,14 @@ public class Jeux implements Logic{
 
 
 			//pacman dead?
-			if(Math.abs(pacman.getPositionX()-ghosts[i].getPositionX())<5 && Math.abs(pacman.getPositionY()-ghosts[i].getPositionY())<5) {
+			if(pacman.getPositionX() == ghosts[i].getPositionX() && pacman.getPositionY() == ghosts[i].getPositionY()) {
 				if(System.currentTimeMillis()-pacman.timeLastKill>2000) {
 					pacman.kill();
 					pacman.timeLastKill = System.currentTimeMillis();
 				}
 			}
 		}
+		movePacman();
 		return ghosts;
 	}
 	
