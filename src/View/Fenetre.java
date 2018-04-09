@@ -25,7 +25,7 @@ public class Fenetre  {
 	    //f.add(new Drawer());  
 	    f.setLayout(null);
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    Dimension fensize = new Dimension(l.getPasDeResolution()*31*zoom, l.getPasDeResolution()*31*zoom);
+	    Dimension fensize = new Dimension(l.getPasDeResolution()*31*zoom, l.getPasDeResolution()*32*zoom);
 	    f.setSize(fensize);
 	    f.setLocation(screenSize.width/2-300, screenSize.height/2-300);
 	    f.setResizable(false);

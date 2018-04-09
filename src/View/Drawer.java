@@ -14,13 +14,25 @@ public class Drawer extends Canvas {
 	private Logic l;
 	private int pas;
 	private Dimension fen;
+	private Image pacman_i;
+	private Image clide_i;
+	private Image wall_i;
+    private Image inky_i;
+    private Image blinky_i;
+    private Image pinky_i;
 
 	public Drawer(Logic l, int zoom, Dimension dim) {
 		super();
 		this.l = l;
 		this.pas = l.getPasDeResolution() * zoom;
 		this.fen = dim;
-	}
+		this.pacman_i = new ImageIcon("images/pac-man.png").getImage();
+		this.clide_i = new ImageIcon("images/clide.png").getImage();
+		this.wall_i = new ImageIcon("images/wall.png").getImage();
+		this.inky_i = new ImageIcon("images/inky.png").getImage();
+        this.blinky_i = new ImageIcon("images/blinky.png").getImage();
+        this.pinky_i = new ImageIcon("images/pinky.png").getImage();
+    }
 
 	public void update(Graphics g) {
 		paint(g);
@@ -42,8 +54,8 @@ public class Drawer extends Canvas {
 				   switch (l.getEntity(i, j).type()) {
 					   case WALL:
                            bufferGraphics.setColor(l.getEntity(i, j).getColor());
-                           //bufferGraphics.drawImage(new ImageIcon("images/wall.gif").getImage(), i*this.pas, j*this.pas,this.pas,this.pas, this);
-                           bufferGraphics.fillRect(i * this.pas, j * this.pas, this.pas, this.pas);
+                           bufferGraphics.drawImage(wall_i, i*this.pas, j*this.pas,this.pas,this.pas, this);
+                           //bufferGraphics.fillRect(i * this.pas, j * this.pas, this.pas, this.pas);
 						   break;
 					   case GOMME:
                            bufferGraphics.setColor(Color.black);
@@ -68,12 +80,29 @@ public class Drawer extends Canvas {
 		   }
 	   }
         Ipacman pacman = l.getPacman();
-        bufferGraphics.drawImage(new ImageIcon("images/pac-man.png").getImage(), pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+        bufferGraphics.drawImage(pacman_i, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
+               bufferGraphics.setColor(Color.black);
+               bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
                bufferGraphics.setColor(Color.red);
                //bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
-               bufferGraphics.drawImage(new ImageIcon("images/clide.png").getImage(), go.getPositionX() * this.pas, go.getPositionY() * this.pas, this.pas, this.pas, this);
+               Image curr_i;
+               switch (go.getGhostType()) {
+                   case CLIDE:
+                       curr_i = clide_i;
+                       break;
+                   case INKY:
+                       curr_i = inky_i;
+                       break;
+                   case BLINKY:
+                       curr_i = blinky_i;
+                       break;
+                   default:
+                   case PINKY:
+                       curr_i = pinky_i;
+               }
+               bufferGraphics.drawImage(curr_i, go.getPositionX() * this.pas, go.getPositionY() * this.pas, this.pas, this.pas, this);
            }
 	   }
 
