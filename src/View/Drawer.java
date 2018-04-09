@@ -14,6 +14,7 @@ public class Drawer extends Canvas {
 	private Logic l;
 	private int pas;
 	private Dimension fen;
+	private int zoom;
 	private Image pacman_i;
 	private Image clide_i;
 	private Image wall_i;

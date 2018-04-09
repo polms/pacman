@@ -3,6 +3,7 @@ package Logic;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import Data.Data;
 import Data.Entity;
@@ -31,49 +32,49 @@ public class Jeux implements Logic{
 	public void movePlayerUp() {
 		//changement de la direction
 		pacman.changeDirection(Direction.up);
-        movePacman();
+        //movePacman();
 	}
 
 	@Override
 	public void movePlayerDown() {
 		pacman.changeDirection(Direction.down);
-		movePacman();
+		//movePacman();
 	}
 
 	@Override
 	public void movePlayerLeft() {
 	    pacman.changeDirection(Direction.left);
-        movePacman();
+        //movePacman();
 	}
 
 	@Override
 	public void movePlayerRight() {
         pacman.changeDirection(Direction.right);
-        movePacman();
+        //movePacman();
 	}
 	
 	
 	private void movePacman() {
 		//pos de pacman dans la matrice
-		int xTableau = pacman.getPositionX();
-		int yTableau = pacman.getPositionY();
+		int xTableau = pacman.getPositionX()/this.pasDeResolution;
+		int yTableau = pacman.getPositionY()/this.pasDeResolution;
 		
 		//s'il y a un mur, pacman s'arrete
 		if(pacman.getDirection()==Direction.down) {
 			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL) //TODO: check array bound
-				pacman.move(1);
+				pacman.move(2);
 		}
 		else if(pacman.getDirection()==Direction.up) {
 			if(plateau[xTableau][yTableau-1] == null ||this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL)
-				pacman.move(1);
+				pacman.move(2);
 		}
 		else if(pacman.getDirection()==Direction.left) {
 			if(plateau[xTableau-1][yTableau] == null ||this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
-				pacman.move(1);
+				pacman.move(2);
 		}
 		else if(pacman.getDirection()==Direction.right) {
 			if(plateau[xTableau+1][yTableau] == null ||this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
-				pacman.move(1);
+				pacman.move(2);
 		}
 
 		//pacman mange les gommes
@@ -137,13 +138,14 @@ public class Jeux implements Logic{
 				marcheArriere = Direction.up;
 
 			//enlève la direction de marche arrière si il y à une autre direction possible
-			if(arDir.size()>1)
-				for(int a=0;a<arDir.size();a++) { //TODO: Itérateur ?
-					if(arDir.get(a)==marcheArriere) {
-						arDir.remove(a);
-						break;
-					}
+			if(arDir.size()>1) {
+				Iterator it = arDir.iterator();
+				while(it.hasNext()) {
+					Direction e = (Direction) it.next();
+					if (e == marcheArriere)
+						it.remove();
 				}
+			}
 
 			//choisi une direction aléatoirement
 			if (arDir.size() != 0) {
@@ -179,7 +181,7 @@ public class Jeux implements Logic{
         for (Entity e : sp.keySet()) {
             if (e.type() == EntityType.PACMAN) {
                 Point p = sp.get(e);
-                return new Pacman(p.x,p.y,data.getInitialPlayerLives());
+                return new Pacman(p.x*this.pasDeResolution,p.y*this.pasDeResolution,data.getInitialPlayerLives());
             }
         }
         return null;
