@@ -6,6 +6,7 @@ public class Pacman implements Ipacman {
 	
 	private int x;
 	private int y;
+	private Direction nextDirection;
 	private Direction direction;
 	private int pv;
 	private int point;
@@ -15,6 +16,7 @@ public class Pacman implements Ipacman {
 		x = posX;
 		y = posY;
 		direction = Direction.up;
+		nextDirection = direction;
 		point = points;
 	}
 
@@ -33,6 +35,11 @@ public class Pacman implements Ipacman {
 		return direction;
 	}
 	
+	
+	public Direction getNextDirection() {
+		return this.nextDirection;
+	}
+	
 
 	public void move(int dx) {
 		switch (direction) {
@@ -49,9 +56,14 @@ public class Pacman implements Ipacman {
 				this.y += dx;
 		}
 	}
-	
+
 	public void changeDirection(Direction dir) {
 		direction = dir;
+	}
+	
+	
+	public void changeNextDirection(Direction dir) {
+		nextDirection = dir;
 	}
 
 	@Override

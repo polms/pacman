@@ -10,6 +10,7 @@ import Data.Entity;
 import Data.EntityGhost;
 import Data.EntityGomme;
 import Data.EntityType;
+import Data.GhostType;
 import Data.GommeType;
 
 public class Jeux implements Logic{
@@ -30,60 +31,48 @@ public class Jeux implements Logic{
 
 	@Override
 	public void movePlayerUp() {
-		//changement de la direction
-		pacman.changeDirection(Direction.up);
+		
+		//changement de la prochaine direction
+		pacman.changeNextDirection(Direction.up);
         //movePacman();
 	}
 
 	@Override
 	public void movePlayerDown() {
-		pacman.changeDirection(Direction.down);
+		pacman.changeNextDirection(Direction.down);
 		//movePacman();
 	}
 
 	@Override
 	public void movePlayerLeft() {
-	    pacman.changeDirection(Direction.left);
+	    pacman.changeNextDirection(Direction.left);
         //movePacman();
 	}
 
 	@Override
 	public void movePlayerRight() {
-        pacman.changeDirection(Direction.right);
+        pacman.changeNextDirection(Direction.right);
         //movePacman();
 	}
 	
 	
 	private void movePacman() {
-		//pos de pacman dans la matrice
-		int xTableau = pacman.getPositionX();
-		int yTableau = pacman.getPositionY();
+		
+		//si la prochaine direction n'est pas égale à la direction actuelle on vérifi s'il peu tourner
+		if(pacman.getNextDirection()!=pacman.getDirection() && !thereIsWall(pacman.getPositionX(), pacman.getPositionY(), pacman.getNextDirection()))
+			pacman.changeDirection(pacman.getNextDirection());
 		
 		//s'il y a un mur, pacman s'arrete
-		if(pacman.getDirection()==Direction.down) {
-			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL) //TODO: check array bound
-				pacman.move(1);
-		}
-		else if(pacman.getDirection()==Direction.up) {
-			if(plateau[xTableau][yTableau-1] == null ||this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL)
-				pacman.move(1);
-		}
-		else if(pacman.getDirection()==Direction.left) {
-			if(plateau[xTableau-1][yTableau] == null ||this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
-				pacman.move(1);
-		}
-		else if(pacman.getDirection()==Direction.right) {
-			if(plateau[xTableau+1][yTableau] == null ||this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
-				pacman.move(1);
-		}
+		if(!thereIsWall(pacman.getPositionX(), pacman.getPositionY(), pacman.getDirection()))
+			pacman.move(1);
 
 		//pacman mange les gommes
-		if(plateau[xTableau][yTableau] != null && plateau[xTableau][yTableau].type() == EntityType.GOMME) {
-			EntityGomme gomme = (EntityGomme) (plateau[xTableau][yTableau]);
+		if(plateau[pacman.getPositionX()][pacman.getPositionY()] != null && plateau[pacman.getPositionX()][pacman.getPositionY()].type() == EntityType.GOMME) {
+			EntityGomme gomme = (EntityGomme) (plateau[pacman.getPositionX()][pacman.getPositionY()]);
 			pacman.eatGomme(data.getGommesValues().get(gomme.getGommeType()));
 			
 			//remove gomme
-			plateau[xTableau][yTableau] = null;
+			plateau[pacman.getPositionX()][pacman.getPositionY()] = null;
 		}
 	}
 
@@ -182,7 +171,7 @@ public class Jeux implements Logic{
             if (e.type() == EntityType.PACMAN) {
                 Point p = sp.get(e);
                 System.out.println(String.valueOf(p.x));
-                return new Pacman(p.x+1,p.y+1,data.getInitialPlayerLives());
+                return new Pacman(p.x,p.y,data.getInitialPlayerLives());
             }
         }
         return null;
@@ -211,4 +200,21 @@ public class Jeux implements Logic{
 		return this.pasDeResolution;
 	}
 
+	
+	
+	private boolean thereIsWall(int posX,int posY,Direction direction) {
+
+        switch (direction) {
+            case up:
+            	return this.plateau[posX][posY-1]!=null && this.plateau[posX][posY-1].type() == EntityType.WALL;
+            case down:
+            	return this.plateau[posX][posY+1]!=null && this.plateau[posX][posY+1].type() == EntityType.WALL;
+            case left:
+            	return this.plateau[posX-1][posY]!=null && this.plateau[posX-1][posY].type() == EntityType.WALL;
+            case right:
+            	return this.plateau[posX+1][posY]!=null && this.plateau[posX+1][posY].type() == EntityType.WALL;
+            default:
+            	return true;
+        }
+	}
 }
