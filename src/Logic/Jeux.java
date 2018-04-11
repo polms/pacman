@@ -56,25 +56,25 @@ public class Jeux implements Logic{
 	
 	private void movePacman() {
 		//pos de pacman dans la matrice
-		int xTableau = pacman.getPositionX()/this.pasDeResolution;
-		int yTableau = pacman.getPositionY()/this.pasDeResolution;
+		int xTableau = pacman.getPositionX();
+		int yTableau = pacman.getPositionY();
 		
 		//s'il y a un mur, pacman s'arrete
 		if(pacman.getDirection()==Direction.down) {
 			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL) //TODO: check array bound
-				pacman.move(2);
+				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.up) {
 			if(plateau[xTableau][yTableau-1] == null ||this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL)
-				pacman.move(2);
+				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.left) {
 			if(plateau[xTableau-1][yTableau] == null ||this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
-				pacman.move(2);
+				pacman.move(1);
 		}
 		else if(pacman.getDirection()==Direction.right) {
 			if(plateau[xTableau+1][yTableau] == null ||this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
-				pacman.move(2);
+				pacman.move(1);
 		}
 
 		//pacman mange les gommes
@@ -181,7 +181,8 @@ public class Jeux implements Logic{
         for (Entity e : sp.keySet()) {
             if (e.type() == EntityType.PACMAN) {
                 Point p = sp.get(e);
-                return new Pacman(p.x*this.pasDeResolution,p.y*this.pasDeResolution,data.getInitialPlayerLives());
+                System.out.println(String.valueOf(p.x));
+                return new Pacman(p.x+1,p.y+1,data.getInitialPlayerLives());
             }
         }
         return null;
