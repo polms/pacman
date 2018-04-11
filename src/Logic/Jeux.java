@@ -149,7 +149,7 @@ public class Jeux implements Logic{
 
 
 			//pacman dead?
-			if(pacman.getPositionX() == ghosts[i].getPositionX() && pacman.getPositionY() == ghosts[i].getPositionY()) {
+			if(Math.abs(pacman.getPositionX() - ghosts[i].getPositionX())<2 && Math.abs(pacman.getPositionY() - ghosts[i].getPositionY())<2) {
 				if(System.currentTimeMillis()-pacman.timeLastKill>2000) {
 					pacman.kill();
 					pacman.timeLastKill = System.currentTimeMillis();

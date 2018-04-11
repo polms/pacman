@@ -29,7 +29,7 @@ public class Drawer extends Canvas {
 		this.fen = dim;
 		this.pacman_i = new ImageIcon("images/pac-man.png").getImage();
 		this.clide_i = new ImageIcon("images/clide.png").getImage();
-		this.wall_i = new ImageIcon("images/wall.png").getImage();
+		this.wall_i = new ImageIcon("images/wall20.png").getImage();
 		this.inky_i = new ImageIcon("images/inky.png").getImage();
         this.blinky_i = new ImageIcon("images/blinky.png").getImage();
         this.pinky_i = new ImageIcon("images/pinky.png").getImage();
@@ -55,6 +55,7 @@ public class Drawer extends Canvas {
 				   switch (l.getEntity(i, j).type()) {
 					   case WALL:
                            bufferGraphics.setColor(l.getEntity(i, j).getColor());
+                           
                            bufferGraphics.drawImage(wall_i, i*this.pas, j*this.pas,this.pas,this.pas, this);
                            //bufferGraphics.fillRect(i * this.pas, j * this.pas, this.pas, this.pas);
 						   break;
@@ -106,7 +107,8 @@ public class Drawer extends Canvas {
                bufferGraphics.drawImage(curr_i, go.getPositionX() * this.pas, go.getPositionY() * this.pas, this.pas, this.pas, this);
            }
 	   }
-
+	    
+	    bufferGraphics.drawString("point = " + String.valueOf(pacman.getPoints()), 10, 10);
         g.drawImage(bufferImage,0,0,this);
 	}
 }
