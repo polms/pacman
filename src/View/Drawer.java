@@ -35,11 +35,10 @@ public class Drawer extends Canvas {
         this.pinky_i = new ImageIcon("images/pinky.png").getImage();
     }
 
-	public void update(Graphics g) {
-		paint(g);
+	public void paint(Graphics g) {
 	}
 
-	public void paint(Graphics g){
+	public void update(Graphics g){
         Image bufferImage;
         Graphics bufferGraphics;
         bufferImage=createImage(fen.width,fen.height);
@@ -55,7 +54,7 @@ public class Drawer extends Canvas {
 				   switch (l.getEntity(i, j).type()) {
 					   case WALL:
                            bufferGraphics.setColor(l.getEntity(i, j).getColor());
-                           
+
                            bufferGraphics.drawImage(wall_i, i*this.pas, j*this.pas,this.pas,this.pas, this);
                            //bufferGraphics.fillRect(i * this.pas, j * this.pas, this.pas, this.pas);
 						   break;
@@ -107,8 +106,8 @@ public class Drawer extends Canvas {
                bufferGraphics.drawImage(curr_i, go.getPositionX() * this.pas, go.getPositionY() * this.pas, this.pas, this.pas, this);
            }
 	   }
-	    
-	    bufferGraphics.drawString("point = " + String.valueOf(pacman.getPoints()), 10, 10);
-        g.drawImage(bufferImage,0,0,this);
+	   g.drawImage(bufferImage,0,0,this);
+	    bufferGraphics.dispose();
+        Thread.yield();
 	}
 }

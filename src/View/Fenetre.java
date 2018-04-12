@@ -14,8 +14,7 @@ public class Fenetre  {
 	
 	private Frame f;
 	private Logic l;
-	
-	
+
 	public Fenetre(Logic gamelogic) {
 	    l = gamelogic;
 	    f= new Frame("Canvas Example");
@@ -25,8 +24,7 @@ public class Fenetre  {
 	    //f.add(new Drawer());  
 	    f.setLayout(null);
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    Dimension fensize = new Dimension(l.getPasDeResolution()*31*zoom, l.getPasDeResolution()*32*zoom);
-	    f.setSize(fensize);
+	    Dimension fensize = new Dimension(l.getPasDeResolution()*30*zoom, l.getPasDeResolution()*30*zoom);
 	    f.setLocation(screenSize.width/2-300, screenSize.height/2-300);
 	    f.setResizable(false);
 	    //f.setUndecorated(true);
@@ -41,16 +39,23 @@ public class Fenetre  {
 
 		Drawer drawer = new Drawer(l, zoom, fensize);
 	    drawer.setBackground(Color.black);
+	    f.setIgnoreRepaint(true);
+	    //drawer.createBufferStrategy(2);
+	    drawer.setSize(fensize);
 	    
         f.addKeyListener(new CustomKeyListener());
 
+        InfoPanel info = new InfoPanel(l);
 		f.setLayout(new BorderLayout());
 		f.add(drawer, BorderLayout.CENTER);
+		f.add(info, BorderLayout.PAGE_END);
+		f.pack();
 	    drawer.validate();
 	    f.setVisible(true);
 	    
 		while(true) {
-			drawer.paint(drawer.getGraphics());
+			drawer.update(drawer.getGraphics());
+			info.updateInfo();
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
