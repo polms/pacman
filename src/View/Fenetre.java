@@ -52,8 +52,13 @@ public class Fenetre  {
 		f.pack();
 	    drawer.validate();
 	    f.setVisible(true);
-	    
-		while(true) {
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while(true) {
 			drawer.update(drawer.getGraphics());
 			info.updateInfo();
 			try {

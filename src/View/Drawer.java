@@ -36,6 +36,18 @@ public class Drawer extends Canvas {
     }
 
 	public void paint(Graphics g) {
+	    Font title_f = new Font("Algerian", Font.BOLD, 50);
+        Font noms_f = new Font("Algerian", Font.BOLD, 20);
+        g.drawImage(this.pacman_i, (fen.width/3) - 100, fen.width/4 - (fen.width/13) + 5, (fen.width/13), (fen.width/13), this);
+	    g.setFont(title_f);
+	    g.setColor(Color.yellow);
+	    g.drawString("Pac - Man", (fen.width/3) - 9,fen.width/4);
+	    g.setFont(noms_f);
+	    g.setColor(Color.white);
+	    g.drawString("Un jeu realiser par :",(fen.width/4), fen.width/2);
+        g.drawString("- Baudouin de la Fleche",(fen.width/4), fen.width/2 + 30);
+        g.drawString("- Robin Moalic",(fen.width/4), fen.width/2 + 60);
+        g.drawString("- Fakher Hamzaoui",(fen.width/4), fen.width/2 + 90);
 	}
 
 	public void update(Graphics g){
