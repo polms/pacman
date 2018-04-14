@@ -6,35 +6,35 @@ public interface Logic {
     /**
      * Move the player by a grid unit down
      */
-    public void movePlayerUp();
+    void movePlayerUp();
 
     /**
      * Move the player by a grid unit down
      */
-    public void movePlayerDown();
+    void movePlayerDown();
 
     /**
      * Move the player by a grid unit left
      */
-    public void movePlayerLeft();
+    void movePlayerLeft();
 
     /**
      * Move the player by a grid unit right
      */
-    public void movePlayerRight();
+    void movePlayerRight();
 
 
     /**
      * Get the size of the board (it is a square)
      * @return The size
      */
-    public int getSize();
+    int getSize();
     
     /**
      * Get the resolution in pixel
      * @return resolution
      */
-    public int getPasDeResolution();
+    int getPasDeResolution();
 
     /**
      * Get the entity at the given position on the board
@@ -42,20 +42,20 @@ public interface Logic {
      * @param Y the y coordinate from the top of the screen
      * @return the entity, or null if outside boundary
      */
-    public Entity getEntity(int X, int Y);
+    Entity getEntity(int X, int Y);
     
     /**
      * get the pacman of the game
      * @return the pacman
      */
-    public Pacman getPacman();
+    Pacman getPacman();
     
     
     /**
      * get all the ghosts of the game
      * @return list of ghost
      */
-    public Ghost[] getGhosts();
+    Ghost[] getGhosts();
 
     /**
      * get the all time best score for a map

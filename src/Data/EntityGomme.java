@@ -8,5 +8,5 @@ public interface EntityGomme extends Entity {
      * Return the type of the gomme
      * @return The type of the gomme
      */
-    public GommeType getGommeType();
+    GommeType getGommeType();
 }

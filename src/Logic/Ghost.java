@@ -5,7 +5,7 @@ import Data.GhostType;
 public class Ghost implements Ighost {
 	private int x;
 	private int y;
-	private GhostType type;
+	private final GhostType type;
 	private int speed;
 	
 	private Direction direction;
@@ -55,14 +55,6 @@ public class Ghost implements Ighost {
 	
 	public void setDirection(Direction dir) {
 		this.direction = dir;
-	}
-
-	public void centreX(int pas) {
-		x = ((int) (x/pas-1/2))*pas;
-	}
-	
-	public void centreY(int pas) {
-		y = ((int) (y/pas-1/2))*pas;
 	}
 
 }

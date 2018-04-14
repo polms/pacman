@@ -22,16 +22,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Load the game information from a save file
  * Can save the high score to thee save file
  */
 public class DataAccess implements Data {
-    private static String VALID_FILE = "niveau.xsd";
-    private static int BOARD_SIZE = 30;
+    private static final String VALID_FILE = "niveau.xsd";
+    private static final int BOARD_SIZE = 30;
     private Document doc;
-    private File xmlFile_rw;
+    private final File xmlFile_rw;
 
 
     public DataAccess(String fileName) throws InvalidDataException, IOException {
@@ -265,7 +266,7 @@ public class DataAccess implements Data {
         DOMSource source = new DOMSource(this.doc);
         StreamResult result = new StreamResult(this.xmlFile_rw);
         try {
-            transformer.transform(source, result);
+            Objects.requireNonNull(transformer).transform(source, result);
         } catch (TransformerException e) {
             e.printStackTrace();
         }
@@ -316,7 +317,7 @@ public class DataAccess implements Data {
     }
 
     private class Entity2 implements Entity {
-        private EntityType t;
+        private final EntityType t;
         private Color c;
 
         public Entity2(EntityType t, Color c) {
@@ -336,8 +337,8 @@ public class DataAccess implements Data {
     }
 
     private class Entity3 implements EntityGomme {
-        private GommeType gt;
-        private EntityType t;
+        private final GommeType gt;
+        private final EntityType t;
         private Color c;
 
         public Entity3 (EntityType t, Color c, GommeType gt){
@@ -362,8 +363,8 @@ public class DataAccess implements Data {
     }
 
     private class Entity4 implements EntityGhost {
-        private GhostType gt;
-        private EntityType t;
+        private final GhostType gt;
+        private final EntityType t;
         private Color c;
 
         public Entity4 (EntityType t, Color c, GhostType gt){

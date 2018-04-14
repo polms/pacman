@@ -6,31 +6,31 @@ public interface Ipacman {
 	 * get the position in X
 	 * @return position
 	 */
-	public int getPositionX();
+    int getPositionX();
 	
 
 	/**
 	 * get the position in Y
 	 * @return position
 	 */
-	public int getPositionY();
+    int getPositionY();
 	
 	
 	/**
 	 * get the direction of Pacman
 	 * @return direction
 	 */
-	public Direction getDirection();
+    Direction getDirection();
 	
 	/**
 	 * get the PV of pacman
 	 * @return PV
 	 */
-	public int getPV();	
+    int getPV();
 	
 	/**
 	 * get the points of pacman
 	 * @return points
 	 */
-	public int getPoints();
+    int getPoints();
 }

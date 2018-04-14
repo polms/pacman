@@ -1,7 +1,5 @@
 package Logic;
 
-import Data.GommeType;
-
 public class Pacman implements Ipacman {
 	
 	private int x;

@@ -8,5 +8,5 @@ public interface EntityGhost extends Entity {
      * Get the type of the ghost
      * @return The type of the ghost
      */
-    public GhostType getGhostType();
+    GhostType getGhostType();
 }

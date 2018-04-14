@@ -11,11 +11,11 @@ public interface Entity {
      * The general color of the component. Black is used to add character to component.
      * @return The color of the component
      */
-    public Color getColor();
+    Color getColor();
 
     /**
      * The entity type, it can be any of EntityType Enum.
      * @return the enum
      */
-    public EntityType type();
+    EntityType type();
 }

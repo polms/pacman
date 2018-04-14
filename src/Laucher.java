@@ -6,7 +6,6 @@ import View.Fenetre;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Laucher {
@@ -28,8 +27,6 @@ public class Laucher {
 
 class OkDialog extends Dialog implements ActionListener {
 
-    private Button ok = new Button("Ok");
-
     public OkDialog(Frame parent, String title, String message) {
 
         super(parent, true);
@@ -37,6 +34,7 @@ class OkDialog extends Dialog implements ActionListener {
         this.add(BorderLayout.CENTER, new Label(message));
         Panel p = new Panel();
         p.setLayout(new FlowLayout());
+        Button ok = new Button("Ok");
         ok.addActionListener(this);
         p.add(ok);
         this.add(BorderLayout.SOUTH, p);

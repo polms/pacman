@@ -13,7 +13,7 @@ import Data.EntityType;
 
 public class Jeux implements Logic{
 	
-	private int pasDeResolution = 10;
+	private final int pasDeResolution = 10;
 	
 	private Data data;
 	private Entity[][] plateau;
@@ -94,76 +94,82 @@ public class Jeux implements Logic{
 	@Override
 	public Ghost[] getGhosts() {
 		//déplacement des GHOSTS
-		for(int i=0;i<ghosts.length;i++) {
+        for (Ghost ghost : ghosts) {
 
-			if (ghosts[i] == null) {
-				continue;
-			}
+            if (ghost == null) {
+                continue;
+            }
 
-			//pos du ghost dans la matrice
-			int xTableau = ghosts[i].getPositionX();
-			int yTableau = ghosts[i].getPositionY();
+            //pos du ghost dans la matrice
+            int xTableau = ghost.getPositionX();
+            int yTableau = ghost.getPositionY();
 
-			//directions possibles
-			ArrayList<Direction> arDir = new ArrayList<>();
-			if(plateau[xTableau][yTableau-1] == null || this.plateau[xTableau][yTableau-1].type()!=EntityType.WALL) //TODO: Check array bound
-				arDir.add(Direction.up);
-			if(plateau[xTableau][yTableau+1] == null || this.plateau[xTableau][yTableau+1].type()!=EntityType.WALL)
-				arDir.add(Direction.down);
-			if(plateau[xTableau-1][yTableau] == null || this.plateau[xTableau-1][yTableau].type()!=EntityType.WALL)
-				arDir.add(Direction.left);
-			if(plateau[xTableau+1][yTableau] == null || this.plateau[xTableau+1][yTableau].type()!=EntityType.WALL)
-				arDir.add(Direction.right);
+            //directions possibles
+            ArrayList<Direction> arDir = new ArrayList<>();
+            if (plateau[xTableau][yTableau - 1] == null || this.plateau[xTableau][yTableau - 1].type() != EntityType.WALL) //TODO: Check array bound
+                arDir.add(Direction.up);
+            if (plateau[xTableau][yTableau + 1] == null || this.plateau[xTableau][yTableau + 1].type() != EntityType.WALL)
+                arDir.add(Direction.down);
+            if (plateau[xTableau - 1][yTableau] == null || this.plateau[xTableau - 1][yTableau].type() != EntityType.WALL)
+                arDir.add(Direction.left);
+            if (plateau[xTableau + 1][yTableau] == null || this.plateau[xTableau + 1][yTableau].type() != EntityType.WALL)
+                arDir.add(Direction.right);
 
-			//trouve la marche arrière
-			Direction marcheArriere;
-			if(ghosts[i].getDirection()==Direction.right) //TODO: premier mouvement ? risque de bloquage
-				marcheArriere = Direction.left;
-			else if(ghosts[i].getDirection()==Direction.left)
-				marcheArriere = Direction.right;
-			else if(ghosts[i].getDirection()==Direction.up)
-				marcheArriere = Direction.down;
-			else
-				marcheArriere = Direction.up;
+            //trouve la marche arrière
+            Direction marcheArriere;
+            switch (ghost.getDirection()) {
+                case right:
+                    marcheArriere = Direction.left;
+                    break;
+                case left:
+                    marcheArriere = Direction.right;
+                    break;
+                case up:
+                    marcheArriere = Direction.down;
+                    break;
+                default:
+                    marcheArriere = Direction.up;
+                    break;
+            }
 
-			//enlève la direction de marche arrière si il y à une autre direction possible
-			if(arDir.size()>1) {
-				Iterator it = arDir.iterator();
-				while(it.hasNext()) {
-					Direction e = (Direction) it.next();
-					if (e == marcheArriere)
-						it.remove();
-				}
-			}
+            //enlève la direction de marche arrière si il y à une autre direction possible
+            if (arDir.size() > 1) {
+                Iterator it = arDir.iterator();
+                while (it.hasNext()) {
+                    Direction e = (Direction) it.next();
+                    if (e == marcheArriere)
+                        it.remove();
+                }
+            }
 
-			//choisi une direction aléatoirement
-			if (arDir.size() != 0) {
-				Direction newDirection = arDir.get((int) ((arDir.size()) * Math.random()));
-				if (newDirection != ghosts[i].getDirection()) {
-					ghosts[i].setDirection(newDirection);
-				}
+            //choisi une direction aléatoirement
+            if (arDir.size() != 0) {
+                Direction newDirection = arDir.get((int) ((arDir.size()) * Math.random()));
+                if (newDirection != ghost.getDirection()) {
+                    ghost.setDirection(newDirection);
+                }
 
-				//déplacement
-				ghosts[i].move(1);
-			}
+                //déplacement
+                ghost.move(1);
+            }
 
 
-			//pacman dead?
-			if(Math.abs(pacman.getPositionX() - ghosts[i].getPositionX())<2 && Math.abs(pacman.getPositionY() - ghosts[i].getPositionY())<2) {
-				if(System.currentTimeMillis()-pacman.timeLastKill>2000) {
-					pacman.kill();
-					if (pacman.getPV() == 0) {
-						System.out.println("Pacman died =( His score was "+pacman.getPoints());
-						if (pacman.getPoints() > bscore) {
-							System.out.print("Pacman set a new high score !");
-							bscore = pacman.getPoints();
-							data.setBestScore(bscore);
-						}
-					}
-					pacman.timeLastKill = System.currentTimeMillis();
-				}
-			}
-		}
+            //pacman dead?
+            if (Math.abs(pacman.getPositionX() - ghost.getPositionX()) < 2 && Math.abs(pacman.getPositionY() - ghost.getPositionY()) < 2) {
+                if (System.currentTimeMillis() - pacman.timeLastKill > 2000) {
+                    pacman.kill();
+                    if (pacman.getPV() == 0) {
+                        System.out.println("Pacman died =( His score was " + pacman.getPoints());
+                        if (pacman.getPoints() > bscore) {
+                            System.out.print("Pacman set a new high score !");
+                            bscore = pacman.getPoints();
+                            data.setBestScore(bscore);
+                        }
+                    }
+                    pacman.timeLastKill = System.currentTimeMillis();
+                }
+            }
+        }
 		movePacman();
 		return ghosts;
 	}
