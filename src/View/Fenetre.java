@@ -4,11 +4,8 @@ import java.awt.event.*;
 
 import javax.swing.ImageIcon;
 
-import Data.DataLoader;
-import Data.InvalidDataException;
 import Logic.Logic;
-import Logic.Jeux;
-import java.awt.*;  
+import java.awt.*;
 
 public class Fenetre  {
 	
@@ -24,7 +21,6 @@ public class Fenetre  {
 	    //f.add(new Drawer());  
 	    f.setLayout(null);
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    Dimension fensize = new Dimension(l.getPasDeResolution()*30*zoom, l.getPasDeResolution()*30*zoom);
 	    f.setLocation(screenSize.width/2-300, screenSize.height/2-300);
 	    f.setResizable(false);
 	    //f.setUndecorated(true);
@@ -37,11 +33,9 @@ public class Fenetre  {
 		});
 
 
-		Drawer drawer = new Drawer(l, zoom, fensize);
+		Drawer drawer = new Drawer(l, zoom);
 	    drawer.setBackground(Color.black);
 	    f.setIgnoreRepaint(true);
-	    //drawer.createBufferStrategy(2);
-	    drawer.setSize(fensize);
 	    
         f.addKeyListener(new CustomKeyListener());
 
@@ -54,7 +48,7 @@ public class Fenetre  {
 	    f.setVisible(true);
 
         try {
-            Thread.sleep(1500);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -93,12 +87,6 @@ public class Fenetre  {
 
 		public void keyReleased(KeyEvent e) {
 		}
-	}
-
-	public static void main(String[] args) throws InvalidDataException {
-        DataLoader dl = new DataLoader("map1.xml");
-        Jeux j = new Jeux(dl);
-		new Fenetre(j);
 	}
 }
 

@@ -17,12 +17,17 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-public class DataLoader implements Data {
+/**
+ * Load the game information from a save file
+ * Can save the high score to thee save file
+ */
+public class DataAccess implements Data {
     private static String VALID_FILE = "niveau.xsd";
     private static int BOARD_SIZE = 30;
     private Document doc;
 
-    public DataLoader(String fileName) throws InvalidDataException {
+
+    public DataAccess(String fileName) throws InvalidDataException, IOException {
         File xmlFile = new File(fileName);
         validate(xmlFile);
 
@@ -30,18 +35,18 @@ public class DataLoader implements Data {
         try {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             this.doc = dBuilder.parse(xmlFile);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException  e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Check if a the level file is correct according to xml schema
-     *
+     * A lot of constrains are checked by the schema, some of them are double checked with contracts
      */
     private void validate(File schema) throws InvalidDataException {
         StreamSource xmlFileSource = new StreamSource(schema);
-        File schemaFile = new File("niveau.xsd");
+        File schemaFile = new File(VALID_FILE);
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         try {
             Schema schemaF = schemaFactory.newSchema(schemaFile);
@@ -239,6 +244,9 @@ public class DataLoader implements Data {
         System.err.println("Err: void setBestScore(int score) unimplemented");
     }
 
+    /**
+     * Print a representation of the board to stdout
+     */
     public void printBoard() {
         Entity[][] tab = this.getPlateau();
         if (tab == null)
@@ -271,83 +279,83 @@ public class DataLoader implements Data {
         }
     }
 
-    public static void main(String[] args) throws InvalidDataException {
-        DataLoader d = new DataLoader("map1.xml");
+    public static void main(String[] args) throws InvalidDataException, IOException {
+        DataAccess d = new DataAccess("map1.xml");
         System.out.println("Score: "+ d.getBestScore());
         System.out.println(d.getEntitiesStartingPosition().values());
         Entity[][] test = d.getPlateau();
         d.printBoard();
     }
-}
 
-class Entity2 implements Entity {
-    private EntityType t;
-    private Color c;
+    private class Entity2 implements Entity {
+        private EntityType t;
+        private Color c;
 
-    public Entity2 (EntityType t, Color c){
-        this.t = t;
-        this.c = c;
+        public Entity2(EntityType t, Color c) {
+            this.t = t;
+            this.c = c;
+        }
+
+        @Override
+        public Color getColor() {
+            return this.c;
+        }
+
+        @Override
+        public EntityType type() {
+            return this.t;
+        }
     }
 
-    @Override
-    public Color getColor() {
-        return this.c;
+    private class Entity3 implements EntityGomme {
+        private GommeType gt;
+        private EntityType t;
+        private Color c;
+
+        public Entity3 (EntityType t, Color c, GommeType gt){
+            this.t = t;
+            this.c = c;
+            this.gt = gt;
+        }
+
+        @Override
+        public Color getColor() {
+            return this.c;
+        }
+
+        @Override
+        public EntityType type() {
+            return this.t;
+        }
+        @Override
+        public GommeType getGommeType() {
+            return this.gt;
+        }
     }
 
-    @Override
-    public EntityType type() {
-        return this.t;
-    }
-}
+    private class Entity4 implements EntityGhost {
+        private GhostType gt;
+        private EntityType t;
+        private Color c;
 
-class Entity3 implements EntityGomme {
-    private GommeType gt;
-    private EntityType t;
-    private Color c;
+        public Entity4 (EntityType t, Color c, GhostType gt){
+            this.t = t;
+            this.c = c;
+            this.gt = gt;
+        }
+        @Override
+        public GhostType getGhostType() {
+            return gt;
+        }
 
-    public Entity3 (EntityType t, Color c, GommeType gt){
-        this.t = t;
-        this.c = c;
-        this.gt = gt;
-    }
+        @Override
+        public Color getColor() {
+            return c;
+        }
 
-    @Override
-    public Color getColor() {
-        return this.c;
-    }
-
-    @Override
-    public EntityType type() {
-        return this.t;
-    }
-    @Override
-    public GommeType getGommeType() {
-        return this.gt;
-    }
-}
-
-class Entity4 implements EntityGhost {
-    private GhostType gt;
-    private EntityType t;
-    private Color c;
-
-    public Entity4 (EntityType t, Color c, GhostType gt){
-        this.t = t;
-        this.c = c;
-        this.gt = gt;
-    }
-    @Override
-    public GhostType getGhostType() {
-        return gt;
-    }
-
-    @Override
-    public Color getColor() {
-        return c;
-    }
-
-    @Override
-    public EntityType type() {
-        return t;
+        @Override
+        public EntityType type() {
+            return t;
+        }
     }
 }

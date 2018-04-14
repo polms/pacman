@@ -5,11 +5,18 @@ import Logic.Logic;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class describe the info section of the game
+ */
 public class InfoPanel extends Panel {
     private Logic l;
     private Label score;
     private Label lives;
 
+    /**
+    * Create a new drawer
+    * @param l access to the game logic
+    */
     public InfoPanel(Logic l) {
         super();
         this.l = l;
@@ -25,6 +32,9 @@ public class InfoPanel extends Panel {
         this.add(lives);
     }
 
+    /**
+     * Update game information
+     */
     public void updateInfo() {
         StringBuilder pv = new StringBuilder();
         int npv = l.getPacman().getPV();

@@ -1,6 +1,5 @@
 package View;
 
-import Data.EntityGhost;
 import Data.EntityGomme;
 import Logic.Logic;
 import Logic.Ighost;
@@ -10,11 +9,13 @@ import java.awt.*;
 
 import javax.swing.ImageIcon;
 
+/**
+ * This class describes the main screen of the game
+ * It is reading the game state at every frame and show it on the screen
+ */
 public class Drawer extends Canvas {
 	private Logic l;
 	private int pas;
-	private Dimension fen;
-	private int zoom;
 	private Image pacman_i;
 	private Image clide_i;
 	private Image wall_i;
@@ -22,11 +23,19 @@ public class Drawer extends Canvas {
     private Image blinky_i;
     private Image pinky_i;
 
-	public Drawer(Logic l, int zoom, Dimension dim) {
+
+    /**
+     * Create a new drawer
+     * @param l access to the game logic
+     * @param zoom multiplier to scale the game screen
+     */
+	public Drawer(Logic l, int zoom) {
 		super();
 		this.l = l;
-		this.pas = l.getPasDeResolution() * zoom;
-		this.fen = dim;
+		this.pas = l.getPasDeResolution() * zoom; // this is the size of a tile
+        Dimension fensize = new Dimension(this.pas*30, this.pas*30);
+        this.setSize(fensize);
+
 		this.pacman_i = new ImageIcon("images/pac-man.png").getImage();
 		this.clide_i = new ImageIcon("images/clide.png").getImage();
 		this.wall_i = new ImageIcon("images/wall20.png").getImage();
@@ -35,7 +44,13 @@ public class Drawer extends Canvas {
         this.pinky_i = new ImageIcon("images/pinky.png").getImage();
     }
 
+    /**
+     * Display a welcome screen
+     * @param g the graphics to draw to (usually the drawer's graphics)
+     */
+    @Override
 	public void paint(Graphics g) {
+	    Dimension fen = this.getSize();
 	    Font title_f = new Font("Algerian", Font.BOLD, 50);
         Font noms_f = new Font("Algerian", Font.BOLD, 20);
         g.drawImage(this.pacman_i, (fen.width/3) - 100, fen.width/4 - (fen.width/13) + 5, (fen.width/13), (fen.width/13), this);
@@ -50,15 +65,21 @@ public class Drawer extends Canvas {
         g.drawString("- Fakher Hamzaoui",(fen.width/4), fen.width/2 + 90);
 	}
 
+    /**
+     * Update the game panel
+     * @param g the graphics to draw to (usually the drawer's graphics)
+     */
+    @Override
 	public void update(Graphics g){
+	    Dimension fen = this.getSize();
         Image bufferImage;
         Graphics bufferGraphics;
         bufferImage=createImage(fen.width,fen.height);
-        bufferGraphics=bufferImage.getGraphics();
+        bufferGraphics=bufferImage.getGraphics();  // initialise double buffering
 
-       this.setBackground(Color.PINK);
+       this.setBackground(Color.PINK); // clear the screen
 	   for (int i = 0; i < l.getSize(); i++) {
-		   for (int j = 0; j < l.getSize(); j++) {
+		   for (int j = 0; j < l.getSize(); j++) {  // for each tile
 		   	   if (l.getEntity(i,j) == null) {
                    bufferGraphics.setColor(Color.black);//TODO: Draw the walls only once
                    bufferGraphics.fillRect(i*this.pas, j*this.pas, this.pas, this.pas);
@@ -96,7 +117,7 @@ public class Drawer extends Canvas {
         bufferGraphics.drawImage(pacman_i, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
-               bufferGraphics.setColor(Color.black);
+               bufferGraphics.setColor(Color.black); // account for png transparency
                bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
                bufferGraphics.setColor(Color.red);
                //bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
