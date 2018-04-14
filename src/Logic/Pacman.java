@@ -12,12 +12,13 @@ public class Pacman implements Ipacman {
 	private int point;
 	public long timeLastKill;
 	
-	public Pacman(int posX,int posY, int points) {
+	public Pacman(int posX,int posY, int lives) {
 		x = posX;
 		y = posY;
 		direction = Direction.up;
 		nextDirection = direction;
-		point = points;
+		point = 0;
+		pv = lives;
 	}
 
 	@Override

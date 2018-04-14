@@ -44,7 +44,13 @@ public class InfoPanel extends Panel {
             for (int i = 0; i < l.getPacman().getPV(); i++)
                 pv.append("#");
         }
-        this.score.setText("Score: "+l.getPacman().getPoints());
+        int pscore = l.getPacman().getPoints();
+        int bscore = l.getBestScore();
+        if (pscore > bscore)
+            this.score.setBackground(Color.ORANGE);
+        this.score.setText("Score: "+pscore+" ("+bscore+")");
+        if (l.getPacman().getPV() <= 0)
+            this.lives.setBackground(Color.RED);
         this.lives.setText("Vies: "+pv.toString());
     }
 }

@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="niveau.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="niveau.xsd">
         <level>1</level>
         <speed>500</speed>
-        <player-lives>3</player-lives>
+        <player-lives>5</player-lives>
 
-        <best-score>134</best-score>
+        <best-score>0</best-score>
 
         <gomes-values>
                 <super-gome time="5000">10</super-gome>
@@ -14,7 +13,7 @@
 
         <start-positions>
                 <pacman x="1" y="2"/>
-                <ghost x="1" y="1">inky</ghost>
+                <ghost x="1" y="4">inky</ghost>
                 <ghost x="4" y="2">pinky</ghost>
                 <ghost x="27" y="4">clide</ghost>
                 <ghost x="22" y="10">blinky</ghost>

@@ -52,7 +52,7 @@ public class Fenetre  {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        while(true) {
+        while(l.getPacman().getPV() > 0) {
 			drawer.update(drawer.getGraphics());
 			info.updateInfo();
 			try {

@@ -56,4 +56,10 @@ public interface Logic {
      * @return list of ghost
      */
     public Ghost[] getGhosts();
+
+    /**
+     * get the all time best score for a map
+     * @return best scrore
+     */
+    int getBestScore();
 }

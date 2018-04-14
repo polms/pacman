@@ -10,8 +10,6 @@ import Data.Entity;
 import Data.EntityGhost;
 import Data.EntityGomme;
 import Data.EntityType;
-import Data.GhostType;
-import Data.GommeType;
 
 public class Jeux implements Logic{
 	
@@ -21,12 +19,14 @@ public class Jeux implements Logic{
 	private Entity[][] plateau;
 	private Pacman pacman;
 	private Ghost[] ghosts;
-	
+	private int bscore;
+
 	public Jeux(Data dataclass) {
 		data = dataclass;
 		plateau = data.getPlateau();
 		pacman = initPacman();
 		ghosts = initGhosts();
+		bscore = data.getBestScore();
 	}
 
 	@Override
@@ -152,6 +152,14 @@ public class Jeux implements Logic{
 			if(Math.abs(pacman.getPositionX() - ghosts[i].getPositionX())<2 && Math.abs(pacman.getPositionY() - ghosts[i].getPositionY())<2) {
 				if(System.currentTimeMillis()-pacman.timeLastKill>2000) {
 					pacman.kill();
+					if (pacman.getPV() == 0) {
+						System.out.println("Pacman died =( His score was "+pacman.getPoints());
+						if (pacman.getPoints() > bscore) {
+							System.out.print("Pacman set a new high score !");
+							bscore = pacman.getPoints();
+							data.setBestScore(bscore);
+						}
+					}
 					pacman.timeLastKill = System.currentTimeMillis();
 				}
 			}
@@ -159,10 +167,13 @@ public class Jeux implements Logic{
 		movePacman();
 		return ghosts;
 	}
-	
-	
-	
-	
+
+	@Override
+	public int getBestScore() {
+		return bscore;
+	}
+
+
 	//private 
 	
 	private Pacman initPacman() {
