@@ -38,7 +38,7 @@ public class Drawer extends Canvas {
 
 		this.pacman_i = new ImageIcon("images/pac-man.png").getImage();
 		this.clide_i = new ImageIcon("images/clide.png").getImage();
-		this.wall_i = new ImageIcon("images/wall20.png").getImage();
+		this.wall_i = new ImageIcon("images/background.png").getImage();
 		this.inky_i = new ImageIcon("images/inky.png").getImage();
         this.blinky_i = new ImageIcon("images/blinky.png").getImage();
         this.pinky_i = new ImageIcon("images/pinky.png").getImage();
@@ -78,6 +78,7 @@ public class Drawer extends Canvas {
         bufferGraphics=bufferImage.getGraphics();  // initialise double buffering
 
        this.setBackground(Color.PINK); // clear the screen
+        bufferGraphics.drawImage(this.wall_i, 0, 0, fen.width, fen.height, this);
 	   for (int i = 0; i < l.getSize(); i++) {
 		   for (int j = 0; j < l.getSize(); j++) {  // for each tile
 		   	   if (l.getEntity(i,j) == null) {
@@ -86,9 +87,9 @@ public class Drawer extends Canvas {
 			   } else {
 				   switch (l.getEntity(i, j).type()) {
 					   case WALL:
-                           bufferGraphics.setColor(l.getEntity(i, j).getColor());
+                           //bufferGraphics.setColor(l.getEntity(i, j).getColor());
 
-                           bufferGraphics.drawImage(wall_i, i*this.pas, j*this.pas,this.pas,this.pas, this);
+                           //bufferGraphics.drawImage(wall_i, i*this.pas, j*this.pas,this.pas,this.pas, this);
                            //bufferGraphics.fillRect(i * this.pas, j * this.pas, this.pas, this.pas);
 						   break;
 					   case GOMME:
