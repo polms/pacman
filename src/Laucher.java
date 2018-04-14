@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Laucher {
     public static void main(String[] arg)  {
-        String level = "map12.xml";
+        String level = "map1.xml";
         if (arg.length == 2)
             level = arg[1];
         try {

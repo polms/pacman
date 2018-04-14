@@ -8,6 +8,12 @@ import org.xml.sax.SAXParseException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
 import java.awt.*;
@@ -25,10 +31,12 @@ public class DataAccess implements Data {
     private static String VALID_FILE = "niveau.xsd";
     private static int BOARD_SIZE = 30;
     private Document doc;
+    private File xmlFile_rw;
 
 
     public DataAccess(String fileName) throws InvalidDataException, IOException {
         File xmlFile = new File(fileName);
+        this.xmlFile_rw = xmlFile;
         validate(xmlFile);
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -241,7 +249,26 @@ public class DataAccess implements Data {
 
     @Override
     public void setBestScore(int score) {
-        System.err.println("Err: void setBestScore(int score) unimplemented");
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        NodeList nl = doc.getElementsByTagName("best-score");
+        assert nl.getLength() == 1;
+        Node bs = nl.item(0);
+        bs.setTextContent(String.valueOf(score));
+
+        DOMSource source = new DOMSource(this.doc);
+        StreamResult result = new StreamResult(this.xmlFile_rw);
+        try {
+            transformer.transform(source, result);
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -285,6 +312,7 @@ public class DataAccess implements Data {
         System.out.println(d.getEntitiesStartingPosition().values());
         Entity[][] test = d.getPlateau();
         d.printBoard();
+        d.setBestScore(13333);
     }
 
     private class Entity2 implements Entity {
