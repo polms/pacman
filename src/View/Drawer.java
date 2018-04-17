@@ -65,7 +65,7 @@ public class Drawer extends Canvas {
 	    g.drawString("Pac - Man", (fen.width/3) - 9,fen.width/4);
 	    g.setFont(noms_f);
 	    g.setColor(Color.white);
-	    g.drawString("Un jeu realiser par :",(fen.width/4), fen.width/2);
+	    g.drawString("Un jeu realise par :",(fen.width/4), fen.width/2);
         g.drawString("- Baudouin de la Fleche",(fen.width/4), fen.width/2 + 30);
         g.drawString("- Robin Moalic",(fen.width/4), fen.width/2 + 60);
         g.drawString("- Fakher Hamzaoui",(fen.width/4), fen.width/2 + 90);
