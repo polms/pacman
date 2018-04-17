@@ -54,6 +54,7 @@ public class Fenetre  {
         }
         while(l.getPacman().getPV() > 0) {
 			drawer.update(drawer.getGraphics());
+			l.tick();
 			info.updateInfo();
 			try {
 				Thread.sleep(200);

@@ -76,24 +76,7 @@ public class Jeux implements Logic{
 		}
 	}
 
-	@Override
-	public int getSize() {
-		return this.plateau.length;
-	}
-
-	@Override
-	public Entity getEntity(int X, int Y) {
-		return plateau[X][Y];
-	}
-
-	@Override
-	public Pacman getPacman() {
-		return pacman;
-	}
-
-	@Override
-	public Ghost[] getGhosts() {
-		//déplacement des GHOSTS
+	public void tick() {
         for (Ghost ghost : ghosts) {
 
             if (ghost == null) {
@@ -170,7 +153,28 @@ public class Jeux implements Logic{
                 }
             }
         }
-		movePacman();
+        movePacman();
+    }
+
+	@Override
+	public int getSize() {
+		return this.plateau.length;
+	}
+
+	@Override
+	public Entity getEntity(int X, int Y) {
+		return plateau[X][Y];
+	}
+
+	@Override
+	public Pacman getPacman() {
+		return pacman;
+	}
+
+	@Override
+	public Ghost[] getGhosts() {
+		//déplacement des GHOSTS
+
 		return ghosts;
 	}
 

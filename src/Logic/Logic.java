@@ -62,4 +62,9 @@ public interface Logic {
      * @return best scrore
      */
     int getBestScore();
+
+    /**
+     * get to the next game state
+     */
+    void tick();
 }

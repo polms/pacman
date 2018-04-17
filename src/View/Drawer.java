@@ -16,7 +16,10 @@ import javax.swing.ImageIcon;
 public class Drawer extends Canvas {
 	private Logic l;
 	private int pas;
-	private Image pacman_i;
+    private Image pacman_u_i;
+    private Image pacman_d_i;
+    private Image pacman_l_i;
+    private Image pacman_r_i;
 	private Image clide_i;
 	private Image wall_i;
     private Image inky_i;
@@ -36,7 +39,10 @@ public class Drawer extends Canvas {
         Dimension fensize = new Dimension(this.pas*30, this.pas*30);
         this.setSize(fensize);
 
-		this.pacman_i = new ImageIcon("images/pac-man.png").getImage();
+        this.pacman_u_i = new ImageIcon("images/pacman_u.gif").getImage();
+        this.pacman_d_i = new ImageIcon("images/pacman_d.gif").getImage();
+        this.pacman_l_i = new ImageIcon("images/pacman_l.gif").getImage();
+        this.pacman_r_i = new ImageIcon("images/pacman_r.gif").getImage();
 		this.clide_i = new ImageIcon("images/clide.png").getImage();
 		this.wall_i = new ImageIcon("images/background.png").getImage();
 		this.inky_i = new ImageIcon("images/inky.png").getImage();
@@ -53,7 +59,7 @@ public class Drawer extends Canvas {
 	    Dimension fen = this.getSize();
 	    Font title_f = new Font("Algerian", Font.BOLD, 50);
         Font noms_f = new Font("Algerian", Font.BOLD, 20);
-        g.drawImage(this.pacman_i, (fen.width/3) - 100, fen.width/4 - (fen.width/13) + 5, (fen.width/13), (fen.width/13), this);
+        g.drawImage(this.pacman_d_i, (fen.width/3) - 100, fen.width/4 - (fen.width/13) + 5, (fen.width/13), (fen.width/13), this);
 	    g.setFont(title_f);
 	    g.setColor(Color.yellow);
 	    g.drawString("Pac - Man", (fen.width/3) - 9,fen.width/4);
@@ -115,7 +121,22 @@ public class Drawer extends Canvas {
 		   }
 	   }
         Ipacman pacman = l.getPacman();
-        bufferGraphics.drawImage(pacman_i, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+	   Image pm = pacman_u_i;
+	    switch (pacman.getDirection()) {
+            case up:
+                pm = pacman_u_i;
+                break;
+            case down:
+                pm = pacman_d_i;
+                break;
+            case left:
+                pm = pacman_l_i;
+                break;
+            case right:
+                pm = pacman_r_i;
+                break;
+        }
+        bufferGraphics.drawImage(pm, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
                bufferGraphics.setColor(Color.black); // account for png transparency
