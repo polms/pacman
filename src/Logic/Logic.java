@@ -48,14 +48,14 @@ public interface Logic {
      * get the pacman of the game
      * @return the pacman
      */
-    Pacman getPacman();
+    Ipacman getPacman();
     
     
     /**
      * get all the ghosts of the game
      * @return list of ghost
      */
-    Ghost[] getGhosts();
+    Ighost[] getGhosts();
 
     /**
      * get the all time best score for a map

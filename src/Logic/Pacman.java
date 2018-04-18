@@ -10,6 +10,7 @@ public class Pacman implements Ipacman {
 	private int point;
 	public long timeLastKill;
 	
+	
 	public Pacman(int posX,int posY, int lives) {
 		x = posX;
 		y = posY;

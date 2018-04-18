@@ -135,10 +135,13 @@ public class Jeux implements Logic{
                 //déplacement
                 ghost.move(1);
             }
+        }
+        movePacman();
+        
 
-
-            //pacman dead?
-            if (Math.abs(pacman.getPositionX() - ghost.getPositionX()) < 2 && Math.abs(pacman.getPositionY() - ghost.getPositionY()) < 2) {
+        //pacman dead?
+        for(Ghost ghost : ghosts) {
+            if (pacman.getPositionX() == ghost.getPositionX() && pacman.getPositionY() == ghost.getPositionY()) {
                 if (System.currentTimeMillis() - pacman.timeLastKill > 2000) {
                     pacman.kill();
                     if (pacman.getPV() == 0) {
@@ -153,7 +156,6 @@ public class Jeux implements Logic{
                 }
             }
         }
-        movePacman();
     }
 
 	@Override
@@ -167,14 +169,13 @@ public class Jeux implements Logic{
 	}
 
 	@Override
-	public Pacman getPacman() {
+	public Ipacman getPacman() {
 		return pacman;
 	}
 
 	@Override
-	public Ghost[] getGhosts() {
+	public Ighost[] getGhosts() {
 		//déplacement des GHOSTS
-
 		return ghosts;
 	}
 
