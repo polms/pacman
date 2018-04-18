@@ -62,8 +62,8 @@ public class Jeux implements Logic{
 		if(pacman.getNextDirection()!=pacman.getDirection() && !thereIsWall(pacman.getPositionX(), pacman.getPositionY(), pacman.getNextDirection()))
 			pacman.changeDirection(pacman.getNextDirection());
 		
-		//s'il y a un mur, pacman s'arrete
-		if(!thereIsWall(pacman.getPositionX(), pacman.getPositionY(), pacman.getDirection()))
+		//s'il y a un mur, pacman s'arrete ou que pacman s'est fait mangé
+		if(!thereIsWall(pacman.getPositionX(), pacman.getPositionY(), pacman.getDirection()) && !pacman.isEaten())
 			pacman.move(1);
 
 		//pacman mange les gommes
@@ -140,7 +140,7 @@ public class Jeux implements Logic{
 
         //pacman dead?
         for(Ghost ghost : ghosts) {
-            if (pacman.getPositionX() == ghost.getPositionX() && pacman.getPositionY() == ghost.getPositionY()) {
+            if (Math.abs(pacman.getPositionX() - ghost.getPositionX())<=1 && Math.abs(pacman.getPositionY() - ghost.getPositionY())<=1) {
                 if (System.currentTimeMillis() - pacman.timeLastKill > 2000) {
                     pacman.kill();
                     if (pacman.getPV() == 0) {
@@ -228,7 +228,7 @@ public class Jeux implements Logic{
 	}
 
 	
-	
+
 	private boolean thereIsWall(int posX,int posY,Direction direction) {
 
         switch (direction) {
@@ -240,6 +240,22 @@ public class Jeux implements Logic{
             	return this.plateau[posX-1][posY]!=null && this.plateau[posX-1][posY].type() == EntityType.WALL;
             case right:
             	return this.plateau[posX+1][posY]!=null && this.plateau[posX+1][posY].type() == EntityType.WALL;
+            default:
+            	return true;
+        }
+	}
+	
+	private boolean thereIPacman(int posX,int posY,Direction direction) {
+
+        switch (direction) {
+            case up:
+            	return this.plateau[posX][posY-1]!=null && this.plateau[posX][posY-1].type() == EntityType.PACMAN;
+            case down:
+            	return this.plateau[posX][posY+1]!=null && this.plateau[posX][posY+1].type() == EntityType.PACMAN;
+            case left:
+            	return this.plateau[posX-1][posY]!=null && this.plateau[posX-1][posY].type() == EntityType.PACMAN;
+            case right:
+            	return this.plateau[posX+1][posY]!=null && this.plateau[posX+1][posY].type() == EntityType.PACMAN;
             default:
             	return true;
         }
