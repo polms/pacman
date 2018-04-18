@@ -33,4 +33,10 @@ public interface Ipacman {
 	 * @return points
 	 */
     int getPoints();
+    
+    /**
+     * 
+     * @return
+     */
+    boolean isEaten();
 }

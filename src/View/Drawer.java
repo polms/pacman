@@ -136,7 +136,8 @@ public class Drawer extends Canvas {
                 pm = pacman_r_i;
                 break;
         }
-        bufferGraphics.drawImage(pm, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+	    if(!pacman.isEaten())
+	    	bufferGraphics.drawImage(pm, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
                bufferGraphics.setColor(Color.black); // account for png transparency

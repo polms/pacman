@@ -9,7 +9,7 @@ public class Pacman implements Ipacman {
 	private int pv;
 	private int point;
 	public long timeLastKill;
-	
+	private boolean eaten;
 	
 	public Pacman(int posX,int posY, int lives) {
 		x = posX;
@@ -74,6 +74,7 @@ public class Pacman implements Ipacman {
 	public void kill() {
 		pv --;
 		System.out.println("Pacman got hurt ");
+		this.eaten = true;
 	}
 	
 	public void eatGomme(int points) {
@@ -83,5 +84,14 @@ public class Pacman implements Ipacman {
 	@Override
 	public int getPoints() {
 		return point;
+	}
+	
+	public void setNotEaten() {
+		eaten = false;
+	}
+
+	@Override
+	public boolean isEaten() {
+		return this.eaten;
 	}
 }

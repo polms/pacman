@@ -136,7 +136,6 @@ public class Jeux implements Logic{
                 ghost.move(1);
             }
         }
-        movePacman();
         
 
         //pacman dead?
@@ -156,6 +155,12 @@ public class Jeux implements Logic{
                 }
             }
         }
+        
+        movePacman();
+        
+        if (System.currentTimeMillis() - pacman.timeLastKill > 2000 && pacman.isEaten())
+        	pacman.setNotEaten();
+
     }
 
 	@Override
