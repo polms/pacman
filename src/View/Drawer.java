@@ -20,6 +20,7 @@ public class Drawer extends Canvas {
     private Image pacman_d_i;
     private Image pacman_l_i;
     private Image pacman_r_i;
+    private Image hurt_i;
 	private Image clide_i;
 	private Image wall_i;
     private Image inky_i;
@@ -43,6 +44,7 @@ public class Drawer extends Canvas {
         this.pacman_d_i = new ImageIcon("images/pacman_d.gif").getImage();
         this.pacman_l_i = new ImageIcon("images/pacman_l.gif").getImage();
         this.pacman_r_i = new ImageIcon("images/pacman_r.gif").getImage();
+        this.hurt_i = new ImageIcon("images/hurt.gif").getImage();
 		this.clide_i = new ImageIcon("images/clide.png").getImage();
 		this.wall_i = new ImageIcon("images/background.png").getImage();
 		this.inky_i = new ImageIcon("images/inky.png").getImage();
@@ -136,8 +138,10 @@ public class Drawer extends Canvas {
                 pm = pacman_r_i;
                 break;
         }
-	    if(!pacman.isEaten())
-	    	bufferGraphics.drawImage(pm, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+        if(pacman.isEaten())
+            bufferGraphics.drawImage(hurt_i, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+        else
+            bufferGraphics.drawImage(pm, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
                bufferGraphics.setColor(Color.black); // account for png transparency
