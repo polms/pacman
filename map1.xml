@@ -3,7 +3,7 @@
         <speed>500</speed>
         <player-lives>5</player-lives>
 
-        <best-score>0</best-score>
+        <best-score>786</best-score>
 
         <gomes-values>
                 <super-gome time="5000">10</super-gome>
