@@ -48,16 +48,20 @@ public class Fenetre  {
 	    f.setVisible(true);
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        int tem= 0;
         while(l.getPacman().getPV() > 0) {
 			drawer.update(drawer.getGraphics());
-			l.tick();
-			info.updateInfo();
+        	if (tem % 4 == 0) {
+				l.tick();
+				info.updateInfo();
+			}
+			tem++;
 			try {
-				Thread.sleep(200);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -26,7 +26,7 @@ public class Drawer extends Canvas {
     private Image inky_i;
     private Image blinky_i;
     private Image pinky_i;
-
+    private float px, py, tx, ty, p;
 
     /**
      * Create a new drawer
@@ -50,6 +50,12 @@ public class Drawer extends Canvas {
 		this.inky_i = new ImageIcon("images/inky.png").getImage();
         this.blinky_i = new ImageIcon("images/blinky.png").getImage();
         this.pinky_i = new ImageIcon("images/pinky.png").getImage();
+
+        px = l.getPacman().getPositionX() * this.pas;
+        tx = px;
+        py = l.getPacman().getPositionY() * this.pas;
+        ty = py;
+        p = 0;
     }
 
     /**
@@ -138,10 +144,19 @@ public class Drawer extends Canvas {
                 pm = pacman_r_i;
                 break;
         }
+
+        tx = l.getPacman().getPositionX() * this.pas;
+        ty = l.getPacman().getPositionY() * this.pas;
+        if (px != tx || py != ty) {
+            px = px + (tx - px) / (this.pas / p);
+            py = py + (ty - py) / (this.pas / p);
+            p = ((p + 1) % 5) + 1;
+        }
         if(pacman.isEaten())
-            bufferGraphics.drawImage(hurt_i, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+            bufferGraphics.drawImage(hurt_i, (int)px, (int)py,this.pas,this.pas, this);
         else
-            bufferGraphics.drawImage(pm, pacman.getPositionX()*this.pas, pacman.getPositionY()*this.pas,this.pas,this.pas, this);
+            bufferGraphics.drawImage(pm, (int)px, (int)py,this.pas,this.pas, this);
+        //bufferGraphics.drawImage(hurt_i, l.getPacman().getPositionX()*this.pas, l.getPacman().getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
                bufferGraphics.setColor(Color.black); // account for png transparency
