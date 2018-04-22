@@ -159,7 +159,11 @@ public class Drawer extends Canvas {
         //bufferGraphics.drawImage(hurt_i, l.getPacman().getPositionX()*this.pas, l.getPacman().getPositionY()*this.pas,this.pas,this.pas, this);
 	    for (Ighost go : l.getGhosts()) {
 	       if (go != null) {
-               bufferGraphics.setColor(Color.black); // account for png transparency
+	           if (go.isFleeing()) {
+                   bufferGraphics.setColor(Color.blue); // account for png transparency
+               } else {
+                   bufferGraphics.setColor(Color.black);
+               }
                bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);
                bufferGraphics.setColor(Color.red);
                //bufferGraphics.fillRect(go.getPositionX()*this.pas, go.getPositionY()*this.pas, this.pas, this.pas);

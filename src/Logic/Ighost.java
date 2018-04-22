@@ -19,7 +19,7 @@ public interface Ighost {
 	
 
 	/**
-	 * get the direction of Pacman
+	 * get the direction of the Ghost
 	 * @return direction
 	 */
     Direction getDirection();
@@ -29,4 +29,10 @@ public interface Ighost {
 	 * @return ghost type
 	 */
     GhostType getGhostType();
+
+	/**
+	 * A gost in flee can be eaten pacman
+	 * @return true if fleeing
+	 */
+	boolean isFleeing();
 }

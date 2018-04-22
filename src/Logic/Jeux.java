@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import Data.Data;
-import Data.Entity;
-import Data.EntityGhost;
-import Data.EntityGomme;
-import Data.EntityType;
+import Data.*;
 
 public class Jeux implements Logic{
 	
@@ -70,7 +66,14 @@ public class Jeux implements Logic{
 		if(plateau[pacman.getPositionX()][pacman.getPositionY()] != null && plateau[pacman.getPositionX()][pacman.getPositionY()].type() == EntityType.GOMME) {
 			EntityGomme gomme = (EntityGomme) (plateau[pacman.getPositionX()][pacman.getPositionY()]);
 			pacman.eatGomme(data.getGommesValues().get(gomme.getGommeType()));
-			
+
+			if (gomme.getGommeType() == GommeType.SUPER) {
+                for (Ghost g : this.ghosts) {
+                    g.setFleeing(true);
+                    pacman.eatGomme(50); // TODO: check value
+                }
+            }
+
 			//remove gomme
 			plateau[pacman.getPositionX()][pacman.getPositionY()] = null;
 		}
@@ -99,21 +102,7 @@ public class Jeux implements Logic{
                 arDir.add(Direction.right);
 
             //trouve la marche arrière
-            Direction marcheArriere;
-            switch (ghost.getDirection()) {
-                case right:
-                    marcheArriere = Direction.left;
-                    break;
-                case left:
-                    marcheArriere = Direction.right;
-                    break;
-                case up:
-                    marcheArriere = Direction.down;
-                    break;
-                default:
-                    marcheArriere = Direction.up;
-                    break;
-            }
+            Direction marcheArriere = ghost.getDirection().getOppositeDirection();
 
             //enlève la direction de marche arrière si il y à une autre direction possible
             if (arDir.size() > 1) {
@@ -141,17 +130,22 @@ public class Jeux implements Logic{
         //pacman dead?
         for(Ghost ghost : ghosts) {
             if (Math.abs(pacman.getPositionX() - ghost.getPositionX())<=1 && Math.abs(pacman.getPositionY() - ghost.getPositionY())<=1) {
-                if (System.currentTimeMillis() - pacman.timeLastKill > 2000) {
-                    pacman.kill();
-                    if (pacman.getPV() == 0) {
-                        System.out.println("Pacman died =( His score was " + pacman.getPoints());
-                        if (pacman.getPoints() > bscore) {
-                            System.out.print("Pacman set a new high score !");
-                            bscore = pacman.getPoints();
-                            data.setBestScore(bscore);
+                if (ghost.isFleeing()) { // pacman ate a ghost
+                    ghost.setFleeing(false);
+                    ghost.reset();
+                } else { // pacman is hit
+                    if (System.currentTimeMillis() - pacman.timeLastKill > 2000) {
+                        pacman.kill();
+                        if (pacman.getPV() == 0) {
+                            System.out.println("Pacman died =( His score was " + pacman.getPoints());
+                            if (pacman.getPoints() > bscore) {
+                                System.out.print("Pacman set a new high score !");
+                                bscore = pacman.getPoints();
+                                data.setBestScore(bscore);
+                            }
                         }
+                        pacman.timeLastKill = System.currentTimeMillis();
                     }
-                    pacman.timeLastKill = System.currentTimeMillis();
                 }
             }
         }
