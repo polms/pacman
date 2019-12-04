@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class Laucher {
+public class Launcher {
     public static void main(String[] arg)  {
         String level = "map1.xml";
         if (arg.length == 2)
