@@ -6,6 +6,7 @@ import Logic.Ighost;
 import Logic.Ipacman;
 
 import java.awt.*;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
@@ -40,22 +41,31 @@ public class Drawer extends Canvas {
         Dimension fensize = new Dimension(this.pas*30, this.pas*30);
         this.setSize(fensize);
 
-        this.pacman_u_i = new ImageIcon("images/pacman_u.gif").getImage();
-        this.pacman_d_i = new ImageIcon("images/pacman_d.gif").getImage();
-        this.pacman_l_i = new ImageIcon("images/pacman_l.gif").getImage();
-        this.pacman_r_i = new ImageIcon("images/pacman_r.gif").getImage();
-        this.hurt_i = new ImageIcon("images/hurt.gif").getImage();
-		this.clide_i = new ImageIcon("images/clide.png").getImage();
-		this.wall_i = new ImageIcon("images/background.png").getImage();
-		this.inky_i = new ImageIcon("images/inky.png").getImage();
-        this.blinky_i = new ImageIcon("images/blinky.png").getImage();
-        this.pinky_i = new ImageIcon("images/pinky.png").getImage();
+        this.pacman_u_i = new ImageIcon(getImg("images/pacman_u.gif")).getImage();
+        this.pacman_d_i = new ImageIcon(getImg("images/pacman_d.gif")).getImage();
+        this.pacman_l_i = new ImageIcon(getImg("images/pacman_l.gif")).getImage();
+        this.pacman_r_i = new ImageIcon(getImg("images/pacman_r.gif")).getImage();
+        this.hurt_i = new ImageIcon(getImg("images/hurt.gif")).getImage();
+		this.clide_i = new ImageIcon(getImg("images/clide.png")).getImage();
+		this.wall_i = new ImageIcon(getImg("images/background.png")).getImage();
+		this.inky_i = new ImageIcon(getImg("images/inky.png")).getImage();
+        this.blinky_i = new ImageIcon(getImg("images/blinky.png")).getImage();
+        this.pinky_i = new ImageIcon(getImg("images/pinky.png")).getImage();
 
         px = l.getPacman().getPositionX() * this.pas;
         tx = px;
         py = l.getPacman().getPositionY() * this.pas;
         ty = py;
         p = 0;
+    }
+
+    /**
+     * Get img path from resource name
+     * @param name name of the resource
+     * @return full resource path
+     */
+    private static URL getImg(String name) {
+	    return Drawer.class.getClassLoader().getResource(name);
     }
 
     /**
